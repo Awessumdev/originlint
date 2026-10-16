@@ -12,7 +12,7 @@ const sites = process.argv.slice(2).length ? process.argv.slice(2)
 const lang = process.env.EC_LANG || 'en';
 const shotDir = process.env.EC_SHOTS || '';
 
-const dir = mkdtempSync(join(tmpdir(), 'edgecheck-e2e-'));
+const dir = mkdtempSync(join(tmpdir(), 'originlint-e2e-'));
 cpSync(new URL('../extension', import.meta.url).pathname, dir, { recursive: true });
 const mf = JSON.parse(readFileSync(join(dir, 'manifest.json'), 'utf8'));
 // EC_NARROW=1: grant only the scanned https origins, like activeTab does, so deep checks stay pending.
@@ -37,7 +37,7 @@ if (!extId) {
   // No service worker in this extension: read the id from chrome://extensions internals.
   const p = await browser.newPage();
   await p.goto('chrome://extensions');
-  extId = await p.evaluate(async () => (await chrome.management.getAll()).find((e) => e.name.startsWith('EdgeCheck'))?.id);
+  extId = await p.evaluate(async () => (await chrome.management.getAll()).find((e) => e.name.startsWith('OriginLint'))?.id);
   await p.close();
 }
 

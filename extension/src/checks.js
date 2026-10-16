@@ -170,7 +170,7 @@ export function evaluate({ page, dns, dnsError, redirect, variant, variantHost }
 
 export function toMarkdown(host, zone, results, t) {
   const icon = { pass: '✅', warn: '⚠️', fail: '❌', info: 'ℹ️', skip: '⏭️', action: '🔎' };
-  const lines = [`# EdgeCheck · ${host}`, zone ? `${t('zoneLabel', [zone])}` : '', ''];
+  const lines = [`# OriginLint · ${host}`, zone ? `${t('zoneLabel', [zone])}` : '', ''];
   for (const g of GROUPS) {
     const rs = results.filter((r) => r.group === g);
     if (!rs.length) continue;

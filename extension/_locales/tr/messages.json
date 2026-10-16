@@ -1,9 +1,9 @@
 {
   "appName": {
-    "message": "EdgeCheck — Cloudflare® siteleri için ayar denetçisi"
+    "message": "OriginLint — Cloudflare® siteleri için ayar denetçisi"
   },
   "trademark": {
-    "message": "Cloudflare, Cloudflare, Inc.'in ticari markasıdır. EdgeCheck bağımsız bir araçtır; Cloudflare ile bağlantılı değildir ve onun tarafından desteklenmez."
+    "message": "Cloudflare, Cloudflare, Inc.'in ticari markasıdır. OriginLint bağımsız bir araçtır; Cloudflare ile bağlantılı değildir ve onun tarafından desteklenmez."
   },
   "appDesc": {
     "message": "Herhangi bir sitede unutulmuş Cloudflare, HTTPS, güvenlik başlığı ve DNS ayarlarını dışarıdan tespit eder."
@@ -93,7 +93,7 @@
     "message": "herkese açık bir alan adı değil"
   },
   "clickAgain": {
-    "message": "EdgeCheck'i açtığınızdan beri bu sekme değişti. Taramak için araç çubuğundaki simgeye tekrar tıklayın."
+    "message": "OriginLint'i açtığınızdan beri bu sekme değişti. Taramak için araç çubuğundaki simgeye tekrar tıklayın."
   },
   "dnsFailed": {
     "message": "DNS sorgusu başarısız: $1"

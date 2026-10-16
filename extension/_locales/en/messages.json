@@ -1,9 +1,9 @@
 {
   "appName": {
-    "message": "EdgeCheck — setup checker for Cloudflare® sites"
+    "message": "OriginLint — setup checker for Cloudflare® sites"
   },
   "trademark": {
-    "message": "Cloudflare is a trademark of Cloudflare, Inc. EdgeCheck is an independent tool, not affiliated with or endorsed by Cloudflare."
+    "message": "Cloudflare is a trademark of Cloudflare, Inc. OriginLint is an independent tool, not affiliated with or endorsed by Cloudflare."
   },
   "appDesc": {
     "message": "Spot forgotten Cloudflare, HTTPS, security header and DNS settings on any site, from the outside."
@@ -93,7 +93,7 @@
     "message": "not a public domain name"
   },
   "clickAgain": {
-    "message": "This tab changed since you opened EdgeCheck. Click the toolbar icon again to scan it."
+    "message": "This tab changed since you opened OriginLint. Click the toolbar icon again to scan it."
   },
   "dnsFailed": {
     "message": "DNS lookup failed: $1"

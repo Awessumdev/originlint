@@ -5,9 +5,9 @@ from pathlib import Path
 
 S = {
     # key: (en, tr)
-    "appName": ("EdgeCheck — setup checker for Cloudflare® sites", "EdgeCheck — Cloudflare® siteleri için ayar denetçisi"),
-    "trademark": ("Cloudflare is a trademark of Cloudflare, Inc. EdgeCheck is an independent tool, not affiliated with or endorsed by Cloudflare.",
-                  "Cloudflare, Cloudflare, Inc.'in ticari markasıdır. EdgeCheck bağımsız bir araçtır; Cloudflare ile bağlantılı değildir ve onun tarafından desteklenmez."),
+    "appName": ("OriginLint — setup checker for Cloudflare® sites", "OriginLint — Cloudflare® siteleri için ayar denetçisi"),
+    "trademark": ("Cloudflare is a trademark of Cloudflare, Inc. OriginLint is an independent tool, not affiliated with or endorsed by Cloudflare.",
+                  "Cloudflare, Cloudflare, Inc.'in ticari markasıdır. OriginLint bağımsız bir araçtır; Cloudflare ile bağlantılı değildir ve onun tarafından desteklenmez."),
     "appDesc": ("Spot forgotten Cloudflare, HTTPS, security header and DNS settings on any site, from the outside.",
                 "Herhangi bir sitede unutulmuş Cloudflare, HTTPS, güvenlik başlığı ve DNS ayarlarını dışarıdan tespit eder."),
     "scanning": ("Scanning…", "Taranıyor…"),
@@ -41,8 +41,8 @@ S = {
                "SSL modu, minimum TLS sürümü ve WAF kuralları dışarıdan görünmez. Bu tarama yalnızca sitenin herkese açık gösterdiklerini raporlar."),
     "skippedNotCf": ("Skipped: the site isn't behind the Cloudflare proxy.", "Atlandı: site Cloudflare proxy'si arkasında değil."),
     "dnsNotDomain": ("not a public domain name", "herkese açık bir alan adı değil"),
-    "clickAgain": ("This tab changed since you opened EdgeCheck. Click the toolbar icon again to scan it.",
-                   "EdgeCheck'i açtığınızdan beri bu sekme değişti. Taramak için araç çubuğundaki simgeye tekrar tıklayın."),
+    "clickAgain": ("This tab changed since you opened OriginLint. Click the toolbar icon again to scan it.",
+                   "OriginLint'i açtığınızdan beri bu sekme değişti. Taramak için araç çubuğundaki simgeye tekrar tıklayın."),
     "dnsFailed": ("DNS lookup failed: $1", "DNS sorgusu başarısız: $1"),
     "st_pass": ("OK", "Tamam"), "st_warn": ("Warning", "Uyarı"), "st_fail": ("Error", "Hata"),
     "st_info": ("Note", "Not"), "st_skip": ("Skipped", "Atlandı"), "st_action": ("Needs check", "Kontrol gerekli"),

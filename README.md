@@ -1,4 +1,4 @@
-# EdgeCheck — Cloudflare setup checker
+# OriginLint — Cloudflare setup checker
 
 Chrome (MV3) extension that spots forgotten Cloudflare, HTTPS, security-header and DNS settings
 on any site **from the outside** — no Cloudflare account or API token needed.
@@ -25,7 +25,7 @@ npm run locales   # tools/gen_locales.py -> _locales/{en,tr}
 npm run icons     # tools/assets/icon.svg -> icons/*.png
 npm test          # rule engine unit tests
 npm run e2e -- https://example.com/   # real Chrome + real popup against live sites
-npm run zip       # edgecheck.zip for the Chrome Web Store
+npm run zip       # originlint.zip for the Chrome Web Store
 npm run store     # store/ screenshots + promo tile (needs store/raw captures, see tools/store-assets.js)
 ```
 `EC_NARROW=1 npm run e2e -- <url>` grants only the scanned https origin (like activeTab), so deep checks stay pending.

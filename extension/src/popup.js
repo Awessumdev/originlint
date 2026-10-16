@@ -19,7 +19,7 @@ let state = {
 
 document.documentElement.lang = chrome.i18n.getUILanguage();
 document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
-$('version').textContent = `EdgeCheck v${chrome.runtime.getManifest().version}`;
+$('version').textContent = `OriginLint v${chrome.runtime.getManifest().version}`;
 
 function el(tag, cls, text) {
   const n = document.createElement(tag);

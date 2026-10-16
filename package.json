@@ -1,5 +1,5 @@
 {
-  "name": "edgecheck",
+  "name": "originlint",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,7 +8,7 @@
     "test": "node --test test/*.test.js",
     "e2e": "node test/e2e.js",
     "store": "node tools/store-assets.js",
-    "zip": "cd extension && rm -f ../edgecheck.zip && zip -qr ../edgecheck.zip . -x '.*' && cd ../store && rm -f ../edgecheck-store.zip && zip -qr ../edgecheck-store.zip listing.md privacy.html screenshot-*.png promo-small.png"
+    "zip": "cd extension && rm -f ../originlint.zip && zip -qr ../originlint.zip . -x '.*' && cd ../store && rm -f ../originlint-store.zip && zip -qr ../originlint-store.zip listing.md privacy.html screenshot-*.png promo-small.png"
   },
   "devDependencies": {
     "puppeteer-core": "^24.43.1"

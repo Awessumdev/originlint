@@ -45,7 +45,7 @@ function screenshotHtml(lang, idx, shot) {
     .frame img{width:400px;margin:10px;display:block;transform:translateY(-${offset}px)}
     .frame:after{content:"";position:absolute;inset:auto 0 0;height:90px;background:linear-gradient(transparent,#fff)}
   </style>
-  <div class="wrap"><div><div class="brand"><img src="${icon}" alt="">EdgeCheck</div><h1>${h}</h1><p>${p}</p></div>
+  <div class="wrap"><div><div class="brand"><img src="${icon}" alt="">OriginLint</div><h1>${h}</h1><p>${p}</p></div>
   <div class="frame"><img src="data:image/png;base64,${shot}" alt=""></div></div>`;
 }
 
@@ -55,7 +55,7 @@ const promoHtml = `${FONT}<style>${BASE}
   .r{display:flex;gap:14px;align-items:center}
   .r img{width:64px;height:64px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
   b{font-size:34px;letter-spacing:-.01em} span{font-size:17px;line-height:1.4;color:#d5f1ec}
-</style><div class="t"><div class="r"><img src="${icon}" alt=""><b>EdgeCheck</b></div>
+</style><div class="t"><div class="r"><img src="${icon}" alt=""><b>OriginLint</b></div>
 <span>Setup checker for Cloudflare® sites. Find forgotten HTTPS, header and DNS settings in one click.</span></div>`;
 
 const browser = await puppeteer.launch({ executablePath: CHROME, args: ['--no-sandbox'] });
