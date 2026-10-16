@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EdgeCheck Privacy Policy</title>
+<style>
+  :root { --bg: #ffffff; --fg: #12201f; --muted: #556866; --line: #d7e2e1; --accent: #0f766e; color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0e1515; --fg: #e4eeed; --muted: #94a9a7; --line: #263534; --accent: #2dd4bf; } }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 48px max(16px, env(safe-area-inset-left, 0px)) 64px; }
+  h1 { font-size: 28px; margin: 0 0 4px; }
+  h2 { font-size: 18px; margin: 32px 0 8px; }
+  .meta { color: var(--muted); margin: 0 0 24px; }
+  hr { border: 0; border-top: 1px solid var(--line); margin: 48px 0; }
+  a { color: var(--accent); }
+  code { font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+  <article lang="en">
+    <h1>EdgeCheck Privacy Policy</h1>
+    <p class="meta">Last updated: 16 October 2026</p>
+
+    <h2>What EdgeCheck does</h2>
+    <p>EdgeCheck is a browser extension that checks the website in your current tab for common Cloudflare, HTTPS, security header and DNS misconfigurations. It only runs when you click its toolbar icon.</p>
+
+    <h2>Data it reads</h2>
+    <p>When you click the icon, EdgeCheck reads the address of the current tab, re-requests that page and up to three of its static files to read their response headers, and checks which scripts the page loaded. If you click “Run deep checks” and grant permission, it also requests that site’s <code>http://</code> address and its www/root-domain counterpart to see where they redirect.</p>
+
+    <h2>Data it sends</h2>
+    <p>To check DNS records (DNSSEC, CAA, SPF, DMARC, IPv6), EdgeCheck sends the domain name of the scanned site to Cloudflare’s public DNS-over-HTTPS resolver at <code>cloudflare-dns.com</code>. Cloudflare’s handling of these queries is described in the <a href="https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/">1.1.1.1 public resolver privacy policy</a>. Nothing else leaves your browser. EdgeCheck has no servers of its own, no analytics and no tracking.</p>
+
+    <h2>Data it stores</h2>
+    <p>EdgeCheck stores only the list of checks you chose to ignore, using Chrome’s <code>storage.sync</code>, so that list follows your Chrome profile if you use Chrome Sync. Scan results are not stored.</p>
+
+    <h2>Sharing and sale</h2>
+    <p>EdgeCheck does not sell, share or use data for advertising, profiling or any purpose other than producing the report you asked for.</p>
+
+    <h2>Contact</h2>
+    <p>Questions: <span>transferinfo@awesum.dev</span></p>
+
+    <p class="meta">Cloudflare is a trademark of Cloudflare, Inc. EdgeCheck is an independent tool, not affiliated with or endorsed by Cloudflare.</p>
+  </article>
+
+  <hr>
+
+  <article lang="tr">
+    <h1>EdgeCheck Gizlilik Politikası</h1>
+    <p class="meta">Son güncelleme: 16 Ekim 2026</p>
+
+    <h2>EdgeCheck ne yapar</h2>
+    <p>EdgeCheck, açık sekmedeki web sitesini yaygın Cloudflare, HTTPS, güvenlik başlığı ve DNS yapılandırma hataları için kontrol eden bir tarayıcı eklentisidir. Yalnızca araç çubuğundaki simgesine tıkladığınızda çalışır.</p>
+
+    <h2>Okuduğu veriler</h2>
+    <p>Simgeye tıkladığınızda EdgeCheck sekmenin adresini okur, yanıt başlıklarını görmek için sayfayı ve en fazla üç statik dosyasını yeniden ister ve sayfanın hangi betikleri yüklediğine bakar. “Derin kontrolleri çalıştır”a tıklayıp izin verirseniz, sitenin <code>http://</code> adresini ve www/kök alan adı karşılığını da isteyerek nereye yönlendiklerine bakar.</p>
+
+    <h2>Gönderdiği veriler</h2>
+    <p>DNS kayıtlarını (DNSSEC, CAA, SPF, DMARC, IPv6) kontrol etmek için EdgeCheck, taranan sitenin alan adını Cloudflare’in herkese açık DNS-over-HTTPS çözümleyicisine (<code>cloudflare-dns.com</code>) gönderir. Cloudflare’in bu sorguları nasıl işlediği <a href="https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/">1.1.1.1 çözümleyici gizlilik politikasında</a> açıklanır. Bunun dışında tarayıcınızdan hiçbir veri çıkmaz. EdgeCheck’in kendi sunucusu, analitiği ya da izleme kodu yoktur.</p>
+
+    <h2>Sakladığı veriler</h2>
+    <p>EdgeCheck yalnızca yoksaymayı seçtiğiniz kontrollerin listesini Chrome’un <code>storage.sync</code> alanında saklar; Chrome Sync kullanıyorsanız bu liste profilinizle birlikte gelir. Tarama sonuçları saklanmaz.</p>
+
+    <h2>Paylaşım ve satış</h2>
+    <p>EdgeCheck verileri satmaz, paylaşmaz; reklam, profilleme ya da istediğiniz raporu üretmek dışında hiçbir amaçla kullanmaz.</p>
+
+    <h2>İletişim</h2>
+    <p>Sorular: <span>transferinfo@awesum.dev</span></p>
+
+    <p class="meta">Cloudflare, Cloudflare, Inc.’in ticari markasıdır. EdgeCheck bağımsız bir araçtır; Cloudflare ile bağlantılı değildir ve onun tarafından desteklenmez.</p>
+  </article>
+</main>
+</body>
+</html>

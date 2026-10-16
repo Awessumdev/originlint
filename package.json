@@ -5,9 +5,10 @@
   "scripts": {
     "locales": "python3 tools/gen_locales.py",
     "icons": "node tools/icons.js",
-    "test": "node --test test/",
+    "test": "node --test test/*.test.js",
     "e2e": "node test/e2e.js",
-    "zip": "cd extension && rm -f ../edgecheck.zip && zip -qr ../edgecheck.zip . -x '.*'"
+    "store": "node tools/store-assets.js",
+    "zip": "cd extension && rm -f ../edgecheck.zip && zip -qr ../edgecheck.zip . -x '.*' && cd ../store && rm -f ../edgecheck-store.zip && zip -qr ../edgecheck-store.zip listing.md privacy.html screenshot-*.png promo-small.png"
   },
   "devDependencies": {
     "puppeteer-core": "^24.43.1"

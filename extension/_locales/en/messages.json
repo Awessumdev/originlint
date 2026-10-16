@@ -1,6 +1,9 @@
 {
   "appName": {
-    "message": "EdgeCheck — Cloudflare setup checker"
+    "message": "EdgeCheck — setup checker for Cloudflare® sites"
+  },
+  "trademark": {
+    "message": "Cloudflare is a trademark of Cloudflare, Inc. EdgeCheck is an independent tool, not affiliated with or endorsed by Cloudflare."
   },
   "appDesc": {
     "message": "Spot forgotten Cloudflare, HTTPS, security header and DNS settings on any site, from the outside."
@@ -35,8 +38,20 @@
   "howToFix": {
     "message": "How to fix"
   },
-  "check": {
-    "message": "Check"
+  "deepButton": {
+    "message": "Run deep checks"
+  },
+  "deep_action": {
+    "message": "Needs a one-time permission for this site to request its http:// and www/apex addresses."
+  },
+  "deepDenied": {
+    "message": "Permission wasn't granted, so deep checks didn't run."
+  },
+  "groupPassed": {
+    "message": "$1 passed"
+  },
+  "groupSkipped": {
+    "message": "$1 skipped"
   },
   "none": {
     "message": "none"
@@ -67,6 +82,12 @@
   },
   "skippedNotCf": {
     "message": "Skipped: the site isn't behind the Cloudflare proxy."
+  },
+  "dnsNotDomain": {
+    "message": "not a public domain name"
+  },
+  "clickAgain": {
+    "message": "This tab changed since you opened EdgeCheck. Click the toolbar icon again to scan it."
   },
   "dnsFailed": {
     "message": "DNS lookup failed: $1"
@@ -126,7 +147,7 @@
     "message": "HTTP/3 isn't advertised."
   },
   "fix_http3": {
-    "message": "Speed › Optimization › Protocol Optimization › HTTP/3 (with QUIC): on."
+    "message": "Speed › Settings › Protocol Optimization › HTTP/3 (with QUIC): on."
   },
   "check_compression": {
     "message": "Compression"
@@ -141,16 +162,16 @@
     "message": "HTML isn't compressed."
   },
   "fix_compression": {
-    "message": "Rules › Compression Rules, and make sure the origin doesn't send Cache-Control: no-transform."
+    "message": "Rules › Overview › Create rule › Compression Rule, and make sure the origin doesn't send Cache-Control: no-transform."
   },
   "check_cache": {
     "message": "Edge cache for static files"
   },
   "cache_pass": {
-    "message": "$1 → cf-cache-status: $2"
+    "message": "cf-cache-status: $1"
   },
   "cache_fail": {
-    "message": "$1 → cf-cache-status: $2. Static files aren't being cached."
+    "message": "Not cached at the edge: $1"
   },
   "cache_none": {
     "message": "No same-origin static file found to test."
@@ -180,7 +201,7 @@
     "message": "Rocket Loader is rewriting scripts. It often breaks React/Next.js hydration and can hurt INP."
   },
   "fix_rocketLoader": {
-    "message": "Speed › Optimization › Content Optimization › Rocket Loader: off."
+    "message": "Speed › Settings › Content Optimization › Rocket Loader: off."
   },
   "check_emailObf": {
     "message": "Email Address Obfuscation"
@@ -192,7 +213,7 @@
     "message": "email-decode.min.js is injected. Harmless, but it's one more script; turn it off if your HTML has no email addresses."
   },
   "fix_emailObf": {
-    "message": "Scrape Shield › Email Address Obfuscation."
+    "message": "Security › Settings › Email Address Obfuscation: off."
   },
   "check_rum": {
     "message": "Web Analytics beacon"
@@ -204,7 +225,7 @@
     "message": "The Cloudflare Web Analytics beacon is loaded. If you don't use that dashboard, it's an extra request."
   },
   "fix_rum": {
-    "message": "Analytics & Logs › Web Analytics: disable the site. Turning off automatic setup alone may not remove it."
+    "message": "Account home › Web Analytics › Manage site › Disable. Turning off automatic setup alone may not remove it."
   },
   "check_challenge": {
     "message": "JavaScript detections"
@@ -216,7 +237,7 @@
     "message": "Bot JS detections are injected (/cdn-cgi/challenge-platform). They add main-thread work on every page."
   },
   "fix_challenge": {
-    "message": "Security › Bots: turn off JavaScript Detections if no rule uses the bot score."
+    "message": "Security › Settings › JS detections: turn off if no rule uses it. It can't be turned off while Bot Fight Mode is on."
   },
   "check_https": {
     "message": "HTTPS"
@@ -233,9 +254,6 @@
   "check_httpRedirect": {
     "message": "HTTP → HTTPS redirect"
   },
-  "httpRedirect_action": {
-    "message": "Needs a one-time permission to request this site's http:// version."
-  },
   "httpRedirect_pass": {
     "message": "http:// requests end up on https://."
   },
@@ -247,6 +265,42 @@
   },
   "fix_httpRedirect": {
     "message": "SSL/TLS › Edge Certificates › Always Use HTTPS, or redirect on the origin server."
+  },
+  "check_hostVariant": {
+    "message": "www and root domain"
+  },
+  "hostVariant_pass": {
+    "message": "$1 redirects to $2."
+  },
+  "hostVariant_unused": {
+    "message": "$1 doesn't resolve, so there's no duplicate."
+  },
+  "hostVariant_canonical": {
+    "message": "$1 serves the same site without redirecting. The canonical tag points to $2, but a 301 is cleaner."
+  },
+  "hostVariant_fail": {
+    "message": "$1 serves the site without redirecting and there's no canonical tag pointing here. Search engines see two sites."
+  },
+  "hostVariant_other": {
+    "message": "$1 redirects to a different host ($2)."
+  },
+  "hostVariant_error": {
+    "message": "Couldn't reach $1: $2"
+  },
+  "fix_hostVariant": {
+    "message": "Rules › Overview › Create rule › Redirect Rule: add a 301 from www to the root domain (or the reverse), keeping the path and query."
+  },
+  "check_mixed": {
+    "message": "Mixed content"
+  },
+  "mixed_pass": {
+    "message": "No http:// resources on this https page."
+  },
+  "mixed_fail": {
+    "message": "$1 http:// resource(s), e.g. $2. Browsers block or upgrade them."
+  },
+  "fix_mixed": {
+    "message": "Change the links to https://, or turn on SSL/TLS › Edge Certificates › Automatic HTTPS Rewrites."
   },
   "check_hsts": {
     "message": "HSTS"
@@ -276,7 +330,7 @@
     "message": "No CSP."
   },
   "fix_csp": {
-    "message": "Send it from your app, or add it with Rules › Transform Rules › Response Header Transform."
+    "message": "Send it from your app, or add it with Rules › Overview › Create rule › Response Header Transform Rule."
   },
   "check_nosniff": {
     "message": "X-Content-Type-Options"
@@ -296,8 +350,11 @@
   "frame_fail": {
     "message": "Neither X-Frame-Options nor CSP frame-ancestors is set."
   },
+  "frame_weak": {
+    "message": "$1 still lets any site frame this page."
+  },
   "fix_frame": {
-    "message": "Add CSP frame-ancestors 'self' (or X-Frame-Options: SAMEORIGIN) in your app or with a Transform Rule."
+    "message": "Add CSP frame-ancestors 'self' (or X-Frame-Options: SAMEORIGIN) in your app or with a Response Header Transform Rule."
   },
   "check_referrer": {
     "message": "Referrer-Policy"
@@ -318,7 +375,7 @@
     "message": "Not set. Consider disabling camera, microphone and geolocation if you don't use them."
   },
   "fix_permissions": {
-    "message": "Add it in your app or with Rules › Transform Rules › Response Header Transform."
+    "message": "Add it in your app or with Rules › Overview › Create rule › Response Header Transform Rule."
   },
   "check_leak": {
     "message": "Server details"
@@ -330,7 +387,7 @@
     "message": "Headers reveal $1."
   },
   "fix_leak": {
-    "message": "Rules › Transform Rules › Response Header Transform: remove X-Powered-By and versioned Server headers."
+    "message": "Rules › Overview › Create rule › Response Header Transform Rule: remove X-Powered-By and versioned Server headers."
   },
   "check_dnssec": {
     "message": "DNSSEC"
@@ -367,6 +424,9 @@
   },
   "spf_weak": {
     "message": "SPF ends with $1, which doesn't stop spoofing."
+  },
+  "spf_noAll": {
+    "message": "SPF has no 'all' mechanism, so mail from unlisted servers isn't rejected."
   },
   "spf_multiple": {
     "message": "$1 SPF records found; only one is allowed."

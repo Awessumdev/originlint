@@ -6,7 +6,7 @@ const CACHED = ['HIT', 'MISS', 'EXPIRED', 'REVALIDATED', 'UPDATING', 'STALE'];
 
 export const GROUPS = ['cloudflare', 'https', 'headers', 'dns'];
 
-export function evaluate({ page, dns, dnsError, redirect }, t) {
+export function evaluate({ page, dns, dnsError, redirect, variant, variantHost }, t) {
   const h = page.page && page.page.headers ? page.page.headers : {};
   const proxied = (h.server || '').toLowerCase() === 'cloudflare' || !!h['cf-ray'];
   const out = [];
@@ -33,13 +33,16 @@ export function evaluate({ page, dns, dnsError, redirect }, t) {
   });
 
   cf('cache', () => {
-    const a = page.asset;
-    if (!a || a.error) return add('cache', 'cloudflare', 'skip', t('cache_none'));
-    const path = new URL(a.url).pathname;
-    const short = path.length > 40 ? '…' + path.slice(-39) : path;
-    const st = (a.headers['cf-cache-status'] || '').toUpperCase();
-    if (CACHED.includes(st)) add('cache', 'cloudflare', 'pass', t('cache_pass', [short, st]));
-    else add('cache', 'cloudflare', 'warn', t('cache_fail', [short, st || t('none')]));
+    const assets = page.assets || [];
+    if (!assets.length) return add('cache', 'cloudflare', 'skip', t('cache_none'));
+    const label = (a) => {
+      const path = new URL(a.url).pathname;
+      const st = (a.headers['cf-cache-status'] || '').toUpperCase();
+      return `${path.length > 40 ? '…' + path.slice(-39) : path} → ${st || t('none')}`;
+    };
+    const uncached = assets.filter((a) => !CACHED.includes((a.headers['cf-cache-status'] || '').toUpperCase()));
+    if (!uncached.length) add('cache', 'cloudflare', 'pass', t('cache_pass', [assets.map(label).join(' · ')]));
+    else add('cache', 'cloudflare', 'warn', t('cache_fail', [uncached.map(label).join(' · ')]));
   });
 
   cf('ipv6', () => {
@@ -61,10 +64,33 @@ export function evaluate({ page, dns, dnsError, redirect }, t) {
   const https = page.protocol === 'https:';
   add('https', 'https', https ? 'pass' : 'fail', t(https ? 'https_pass' : 'https_fail'));
 
-  if (!redirect) add('httpRedirect', 'https', 'action', t('httpRedirect_action'));
+  if (!redirect) add('httpRedirect', 'https', 'action', t('deep_action'));
   else if (redirect.error) add('httpRedirect', 'https', 'skip', t('httpRedirect_error', [redirect.error]));
   else if (redirect.finalUrl.startsWith('https://')) add('httpRedirect', 'https', 'pass', t('httpRedirect_pass'));
   else add('httpRedirect', 'https', 'fail', t('httpRedirect_fail', [redirect.finalUrl]));
+
+  // www <-> apex: one of them should redirect to the other, or search engines see two sites.
+  if (variantHost) {
+    if (!variant) add('hostVariant', 'https', 'action', t('deep_action'));
+    else if (variant.noDns) add('hostVariant', 'https', 'pass', t('hostVariant_unused', [variantHost]));
+    else if (variant.error) add('hostVariant', 'https', 'skip', t('hostVariant_error', [variantHost, variant.error]));
+    else {
+      const finalHost = new URL(variant.finalUrl).hostname;
+      let canonHost = '';
+      try { canonHost = page.canonical ? new URL(page.canonical).hostname : ''; } catch {}
+      if (finalHost === page.host) add('hostVariant', 'https', 'pass', t('hostVariant_pass', [variantHost, page.host]));
+      else if (finalHost === variantHost && canonHost === page.host)
+        add('hostVariant', 'https', 'info', t('hostVariant_canonical', [variantHost, page.host]));
+      else if (finalHost === variantHost) add('hostVariant', 'https', 'warn', t('hostVariant_fail', [variantHost]));
+      else add('hostVariant', 'https', 'info', t('hostVariant_other', [variantHost, finalHost]));
+    }
+  }
+
+  if (https) {
+    const mixed = page.mixed || [];
+    add('mixed', 'https', mixed.length ? 'warn' : 'pass',
+      mixed.length ? t('mixed_fail', [mixed.length, mixed[0]]) : t('mixed_pass'));
+  }
 
   const hsts = h['strict-transport-security'];
   if (!https) add('hsts', 'https', 'skip', t('https_fail'));
@@ -87,9 +113,12 @@ export function evaluate({ page, dns, dnsError, redirect }, t) {
   add('nosniff', 'headers', nosniff ? 'pass' : 'warn', t(nosniff ? 'nosniff_pass' : 'nosniff_fail'));
 
   // frame-ancestors is ignored in <meta> CSP, so only the header counts.
-  const fa = /frame-ancestors/i.test(h['content-security-policy'] || '');
-  const xfo = h['x-frame-options'];
-  if (fa || xfo) add('frame', 'headers', 'pass', fa ? 'CSP frame-ancestors' : `X-Frame-Options: ${xfo}`);
+  const fa = ((h['content-security-policy'] || '').match(/frame-ancestors\s+([^;]*)/i) || [])[1];
+  const xfo = (h['x-frame-options'] || '').trim();
+  const faOpen = fa != null && fa.split(/\s+/).some((v) => v === '*' || v === 'https:' || v === 'http:');
+  if (fa != null && !faOpen) add('frame', 'headers', 'pass', 'CSP frame-ancestors');
+  else if (/^(deny|sameorigin)$/i.test(xfo) && fa == null) add('frame', 'headers', 'pass', `X-Frame-Options: ${xfo}`);
+  else if (faOpen || xfo) add('frame', 'headers', 'warn', t('frame_weak', [faOpen ? `frame-ancestors ${fa.trim()}` : `X-Frame-Options: ${xfo}`]));
   else add('frame', 'headers', 'warn', t('frame_fail'));
 
   const rp = h['referrer-policy'];
@@ -112,19 +141,21 @@ export function evaluate({ page, dns, dnsError, redirect }, t) {
   const z = dns.zone;
   add('dnssec', 'dns', dns.ds.length ? 'pass' : 'warn', t(dns.ds.length ? 'dnssec_pass' : 'dnssec_fail', [z]));
 
-  const issuers = dns.caa.filter((c) => c.tag === 'issue' || c.tag === 'issuewild')
-    .map((c) => c.value.split(';')[0].trim().toLowerCase()).filter(Boolean);
+  const issueRecs = dns.caa.filter((c) => c.tag === 'issue' || c.tag === 'issuewild');
+  const issuers = [...new Set(issueRecs.map((c) => c.value.split(';')[0].trim().toLowerCase()).filter(Boolean))];
   if (!dns.caa.length) add('caa', 'dns', 'info', t('caa_none'));
-  else if (proxied && issuers.length && !issuers.some((i) => CF_CAS.includes(i)))
-    add('caa', 'dns', 'warn', t('caa_bad', [[...new Set(issuers)].join(', ')]));
-  else add('caa', 'dns', 'pass', t('caa_pass', [[...new Set(issuers)].join(', ') || '—']));
+  else if (proxied && issueRecs.length && !issuers.some((i) => CF_CAS.includes(i)))
+    add('caa', 'dns', 'warn', t('caa_bad', [issuers.join(', ') || ';']));
+  else add('caa', 'dns', 'pass', t('caa_pass', [issuers.join(', ') || '—']));
 
   const spf = dns.txt.filter((s) => /^v=spf1(\s|$)/i.test(s));
   if (!spf.length) add('spf', 'dns', 'warn', t('spf_fail', [z]));
   else if (spf.length > 1) add('spf', 'dns', 'fail', t('spf_multiple', [spf.length]));
   else {
-    const all = (spf[0].match(/[+?~-]?all\b/i) || [''])[0];
-    if (all === '+all' || all === '?all' || all === 'all') add('spf', 'dns', 'warn', t('spf_weak', [all]));
+    const m = spf[0].match(/(?:^|\s)([+?~-]?all)(?=\s|$)/i);
+    const all = m ? m[1].toLowerCase() : '';
+    if (!all && !/(?:^|\s)redirect=/i.test(spf[0])) add('spf', 'dns', 'warn', t('spf_noAll'));
+    else if (all === '+all' || all === '?all' || all === 'all') add('spf', 'dns', 'warn', t('spf_weak', [all]));
     else add('spf', 'dns', 'pass', spf[0]);
   }
 

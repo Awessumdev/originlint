@@ -15,7 +15,8 @@ const shotDir = process.env.EC_SHOTS || '';
 const dir = mkdtempSync(join(tmpdir(), 'edgecheck-e2e-'));
 cpSync(new URL('../extension', import.meta.url).pathname, dir, { recursive: true });
 const mf = JSON.parse(readFileSync(join(dir, 'manifest.json'), 'utf8'));
-mf.host_permissions = ['<all_urls>'];
+// EC_NARROW=1: grant only the scanned https origins, like activeTab does, so deep checks stay pending.
+mf.host_permissions = process.env.EC_NARROW ? sites.map((u) => `${new URL(u).origin}/*`) : ['<all_urls>'];
 writeFileSync(join(dir, 'manifest.json'), JSON.stringify(mf));
 writeFileSync(join(dir, 'src/test-shim.js'), `
   const target = new URLSearchParams(location.search).get('target');
@@ -46,7 +47,7 @@ for (const site of sites) {
   await tab.goto(site, { waitUntil: 'networkidle2', timeout: 45000 });
   const target = tab.url();
   const popup = await browser.newPage();
-  await popup.setViewport({ width: 400, height: 600 });
+  await popup.setViewport({ width: 400, height: 600, deviceScaleFactor: shotDir ? 2 : 1 });
   const errors = [];
   popup.on('pageerror', (e) => errors.push(e.message));
   popup.on('console', (m) => m.type() === 'error' && errors.push(m.text()));
@@ -64,11 +65,14 @@ for (const site of sites) {
   console.log(`\n=== ${target}  [${out.chip}] ${out.zone}\n${out.summary}`);
   if (out.error) { console.log('ERROR', out.error); failures++; }
   out.items.forEach((l) => console.log('  ' + l));
+  console.log('  deep-check buttons:', await popup.$$eval('.run', (b) => b.map((x) => x.textContent)));
   if (errors.length) { console.log('popup errors:', errors); failures++; }
   if (shotDir) {
+    // EC_OPENFIX=1: expand the fix hints of warnings (store screenshot "every finding comes with a fix").
+    if (process.env.EC_OPENFIX) await popup.evaluate(() => document.querySelectorAll('#results .st-warn .fix').forEach((d) => { d.open = true; }));
     const h = await popup.evaluate(() => document.documentElement.scrollHeight);
-    await popup.setViewport({ width: 400, height: Math.min(h, 1400) });
-    await popup.screenshot({ path: join(shotDir, new URL(target).hostname + `-${lang}.png`), fullPage: true });
+    await popup.setViewport({ width: 400, height: Math.min(h, 1400), deviceScaleFactor: 2 });
+    await popup.screenshot({ path: join(shotDir, new URL(target).hostname + `-${lang}${process.env.EC_OPENFIX ? '-fix' : ''}.png`), fullPage: true });
   }
   await popup.close();
   await tab.close();

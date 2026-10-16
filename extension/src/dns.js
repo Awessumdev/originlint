@@ -4,7 +4,7 @@ const T = { A: 1, CNAME: 5, SOA: 6, TXT: 16, AAAA: 28, DS: 43, CAA: 257 };
 
 async function query(name, type, fetchImpl = fetch) {
   const url = `${DOH}?name=${encodeURIComponent(name)}&type=${type}`;
-  const r = await fetchImpl(url, { headers: { accept: 'application/dns-json' } });
+  const r = await fetchImpl(url, { headers: { accept: 'application/dns-json' }, signal: AbortSignal.timeout(8000) });
   if (!r.ok) throw new Error(`DoH ${r.status}`);
   return r.json();
 }
@@ -37,13 +37,15 @@ export async function findZone(host, fetchImpl) {
   let candidate = host.toLowerCase();
   while (candidate.split('.').length >= 2) {
     const res = await query(candidate, 'SOA', fetchImpl);
-    const own = answers(res, 'SOA')[0];
-    if (own) return trimDot(own.name);
-    const viaCname = answers(res, 'CNAME').length > 0;
-    const auth = (res.Authority || []).find((a) => a.type === T.SOA);
-    if (auth && !viaCname) {
-      const zone = trimDot(auth.name);
-      if (candidate === zone || candidate.endsWith('.' + zone)) return zone;
+    // A CNAME'd name can't be a zone apex; the resolver would return the target's SOA instead.
+    if (!answers(res, 'CNAME').length) {
+      const own = answers(res, 'SOA').find((a) => trimDot(a.name) === candidate);
+      if (own) return candidate;
+      const auth = (res.Authority || []).find((a) => a.type === T.SOA);
+      if (auth) {
+        const zone = trimDot(auth.name);
+        if (candidate === zone || candidate.endsWith('.' + zone)) return zone;
+      }
     }
     candidate = candidate.slice(candidate.indexOf('.') + 1);
   }
@@ -77,4 +79,22 @@ export async function collectDns(host, fetchImpl) {
     txt: answers(txt, 'TXT').map((a) => joinTxt(a.data)),
     dmarc: answers(dmarc, 'TXT').map((a) => joinTxt(a.data)).filter((s) => /^v=DMARC1/i.test(s)),
   };
+}
+
+// Does the name resolve to an address at all? (CNAME chains are followed by the resolver.)
+export async function hasAddress(name, fetchImpl) {
+  const [a, aaaa] = await Promise.all([query(name, 'A', fetchImpl), query(name, 'AAAA', fetchImpl)]);
+  return answers(a, 'A').length > 0 || answers(aaaa, 'AAAA').length > 0;
+}
+
+// IP literals, localhost and other single-label names have no public DNS zone to check.
+export function isDnsName(host) {
+  return host.includes('.') && !/^[\d.]+$/.test(host) && !host.includes(':') && !host.startsWith('[');
+}
+
+// The www <-> apex counterpart of a host, or '' when the host is some other subdomain.
+export function hostVariant(host, zone) {
+  if (host === zone) return `www.${zone}`;
+  if (host === `www.${zone}`) return zone;
+  return '';
 }

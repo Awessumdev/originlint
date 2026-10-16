@@ -1,6 +1,9 @@
 {
   "appName": {
-    "message": "EdgeCheck — Cloudflare ayar denetçisi"
+    "message": "EdgeCheck — Cloudflare® siteleri için ayar denetçisi"
+  },
+  "trademark": {
+    "message": "Cloudflare, Cloudflare, Inc.'in ticari markasıdır. EdgeCheck bağımsız bir araçtır; Cloudflare ile bağlantılı değildir ve onun tarafından desteklenmez."
   },
   "appDesc": {
     "message": "Herhangi bir sitede unutulmuş Cloudflare, HTTPS, güvenlik başlığı ve DNS ayarlarını dışarıdan tespit eder."
@@ -35,8 +38,20 @@
   "howToFix": {
     "message": "Nasıl düzeltilir"
   },
-  "check": {
-    "message": "Kontrol et"
+  "deepButton": {
+    "message": "Derin kontrolleri çalıştır"
+  },
+  "deep_action": {
+    "message": "Sitenin http:// ve www/kök adreslerini istemek için bu siteye özel tek seferlik izin gerekir."
+  },
+  "deepDenied": {
+    "message": "İzin verilmediği için derin kontroller çalışmadı."
+  },
+  "groupPassed": {
+    "message": "$1 geçti"
+  },
+  "groupSkipped": {
+    "message": "$1 atlandı"
   },
   "none": {
     "message": "yok"
@@ -67,6 +82,12 @@
   },
   "skippedNotCf": {
     "message": "Atlandı: site Cloudflare proxy'si arkasında değil."
+  },
+  "dnsNotDomain": {
+    "message": "herkese açık bir alan adı değil"
+  },
+  "clickAgain": {
+    "message": "EdgeCheck'i açtığınızdan beri bu sekme değişti. Taramak için araç çubuğundaki simgeye tekrar tıklayın."
   },
   "dnsFailed": {
     "message": "DNS sorgusu başarısız: $1"
@@ -126,7 +147,7 @@
     "message": "HTTP/3 duyurulmuyor."
   },
   "fix_http3": {
-    "message": "Speed › Optimization › Protocol Optimization › HTTP/3 (with QUIC): açın."
+    "message": "Speed › Settings › Protocol Optimization › HTTP/3 (with QUIC): açın."
   },
   "check_compression": {
     "message": "Sıkıştırma"
@@ -141,16 +162,16 @@
     "message": "HTML sıkıştırılmıyor."
   },
   "fix_compression": {
-    "message": "Rules › Compression Rules; origin'in Cache-Control: no-transform göndermediğinden emin olun."
+    "message": "Rules › Overview › Create rule › Compression Rule; origin'in Cache-Control: no-transform göndermediğinden emin olun."
   },
   "check_cache": {
     "message": "Statik dosyalar için edge önbelleği"
   },
   "cache_pass": {
-    "message": "$1 → cf-cache-status: $2"
+    "message": "cf-cache-status: $1"
   },
   "cache_fail": {
-    "message": "$1 → cf-cache-status: $2. Statik dosyalar önbelleğe alınmıyor."
+    "message": "Edge'de önbelleğe alınmıyor: $1"
   },
   "cache_none": {
     "message": "Test edilecek aynı kaynaklı statik dosya bulunamadı."
@@ -180,7 +201,7 @@
     "message": "Rocket Loader betikleri yeniden yazıyor. React/Next.js hidrasyonunu sık bozar ve INP'yi kötüleştirebilir."
   },
   "fix_rocketLoader": {
-    "message": "Speed › Optimization › Content Optimization › Rocket Loader: kapatın."
+    "message": "Speed › Settings › Content Optimization › Rocket Loader: kapatın."
   },
   "check_emailObf": {
     "message": "E-posta adresi gizleme"
@@ -192,7 +213,7 @@
     "message": "email-decode.min.js ekleniyor. Zararsız ama fazladan bir betik; HTML'de e-posta adresi yoksa kapatın."
   },
   "fix_emailObf": {
-    "message": "Scrape Shield › Email Address Obfuscation."
+    "message": "Security › Settings › Email Address Obfuscation: kapatın."
   },
   "check_rum": {
     "message": "Web Analytics beacon"
@@ -204,7 +225,7 @@
     "message": "Cloudflare Web Analytics beacon yükleniyor. O paneli kullanmıyorsanız fazladan bir istek."
   },
   "fix_rum": {
-    "message": "Analytics & Logs › Web Analytics: siteyi devre dışı bırakın. Yalnız otomatik kurulumu kapatmak yetmeyebilir."
+    "message": "Hesap ana sayfası › Web Analytics › Manage site › Disable. Yalnız otomatik kurulumu kapatmak yetmeyebilir."
   },
   "check_challenge": {
     "message": "JavaScript tespitleri"
@@ -216,7 +237,7 @@
     "message": "Bot JS tespitleri ekleniyor (/cdn-cgi/challenge-platform). Her sayfada ana iş parçacığına yük bindirir."
   },
   "fix_challenge": {
-    "message": "Security › Bots: bot skorunu kullanan kural yoksa JavaScript Detections'ı kapatın."
+    "message": "Security › Settings › JS detections: kullanan kural yoksa kapatın. Bot Fight Mode açıkken kapatılamaz."
   },
   "check_https": {
     "message": "HTTPS"
@@ -233,9 +254,6 @@
   "check_httpRedirect": {
     "message": "HTTP → HTTPS yönlendirme"
   },
-  "httpRedirect_action": {
-    "message": "Sitenin http:// sürümünü istemek için tek seferlik izin gerekir."
-  },
   "httpRedirect_pass": {
     "message": "http:// istekleri https://'e yönleniyor."
   },
@@ -247,6 +265,42 @@
   },
   "fix_httpRedirect": {
     "message": "SSL/TLS › Edge Certificates › Always Use HTTPS'i açın ya da yönlendirmeyi origin sunucusunda yapın."
+  },
+  "check_hostVariant": {
+    "message": "www ve kök alan adı"
+  },
+  "hostVariant_pass": {
+    "message": "$1, $2 adresine yönleniyor."
+  },
+  "hostVariant_unused": {
+    "message": "$1 çözümlenmiyor, yani kopya site yok."
+  },
+  "hostVariant_canonical": {
+    "message": "$1 yönlendirmeden aynı siteyi sunuyor. canonical etiketi $2 adresini gösteriyor ama 301 daha temiz."
+  },
+  "hostVariant_fail": {
+    "message": "$1 yönlendirmeden siteyi sunuyor ve buraya işaret eden canonical etiketi yok. Arama motorları iki ayrı site görür."
+  },
+  "hostVariant_other": {
+    "message": "$1 farklı bir adrese yönleniyor ($2)."
+  },
+  "hostVariant_error": {
+    "message": "$1 adresine ulaşılamadı: $2"
+  },
+  "fix_hostVariant": {
+    "message": "Rules › Overview › Create rule › Redirect Rule: www'den kök alan adına (veya tersi) yolu ve sorguyu koruyan bir 301 ekleyin."
+  },
+  "check_mixed": {
+    "message": "Karışık içerik"
+  },
+  "mixed_pass": {
+    "message": "Bu https sayfasında http:// kaynak yok."
+  },
+  "mixed_fail": {
+    "message": "$1 http:// kaynak var, ör. $2. Tarayıcılar bunları engeller ya da yükseltir."
+  },
+  "fix_mixed": {
+    "message": "Bağlantıları https:// yapın ya da SSL/TLS › Edge Certificates › Automatic HTTPS Rewrites'ı açın."
   },
   "check_hsts": {
     "message": "HSTS"
@@ -276,7 +330,7 @@
     "message": "CSP yok."
   },
   "fix_csp": {
-    "message": "Uygulamanızdan gönderin ya da Rules › Transform Rules › Response Header Transform ile ekleyin."
+    "message": "Uygulamanızdan gönderin ya da Rules › Overview › Create rule › Response Header Transform Rule ile ekleyin."
   },
   "check_nosniff": {
     "message": "X-Content-Type-Options"
@@ -296,8 +350,11 @@
   "frame_fail": {
     "message": "Ne X-Frame-Options ne de CSP frame-ancestors var."
   },
+  "frame_weak": {
+    "message": "$1 hâlâ her sitenin bu sayfayı çerçevelemesine izin veriyor."
+  },
   "fix_frame": {
-    "message": "Uygulamanızda ya da Transform Rule ile CSP frame-ancestors 'self' (veya X-Frame-Options: SAMEORIGIN) ekleyin."
+    "message": "Uygulamanızda ya da Transform Rule ile (Response Header Transform Rule) CSP frame-ancestors 'self' (veya X-Frame-Options: SAMEORIGIN) ekleyin."
   },
   "check_referrer": {
     "message": "Referrer-Policy"
@@ -318,7 +375,7 @@
     "message": "Ayarlı değil. Kullanmıyorsanız kamera, mikrofon ve konumu kapatmayı düşünün."
   },
   "fix_permissions": {
-    "message": "Uygulamanızda ya da Rules › Transform Rules › Response Header Transform ile ekleyin."
+    "message": "Uygulamanızda ya da Rules › Overview › Create rule › Response Header Transform Rule ile ekleyin."
   },
   "check_leak": {
     "message": "Sunucu bilgisi"
@@ -330,7 +387,7 @@
     "message": "Başlıklar şunu açığa çıkarıyor: $1."
   },
   "fix_leak": {
-    "message": "Rules › Transform Rules › Response Header Transform: X-Powered-By ve sürümlü Server başlıklarını kaldırın."
+    "message": "Rules › Overview › Create rule › Response Header Transform Rule: X-Powered-By ve sürümlü Server başlıklarını kaldırın."
   },
   "check_dnssec": {
     "message": "DNSSEC"
@@ -367,6 +424,9 @@
   },
   "spf_weak": {
     "message": "SPF $1 ile bitiyor; bu sahteciliği engellemez."
+  },
+  "spf_noAll": {
+    "message": "SPF'te 'all' mekanizması yok; listede olmayan sunuculardan gelen e-posta reddedilmez."
   },
   "spf_multiple": {
     "message": "$1 SPF kaydı bulundu; yalnızca bir tane olmalı."

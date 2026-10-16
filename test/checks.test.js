@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { evaluate, toMarkdown } from '../extension/src/checks.js';
-import { joinTxt, parseCaa, findZone } from '../extension/src/dns.js';
+import { joinTxt, parseCaa, findZone, hostVariant, isDnsName } from '../extension/src/dns.js';
 
 const msgs = JSON.parse(readFileSync(new URL('../extension/_locales/en/messages.json', import.meta.url)));
 const t = (k, subs = []) => {
@@ -20,7 +20,11 @@ const goodPage = {
     'content-security-policy': "default-src 'self'; frame-ancestors 'self'",
     'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin', 'permissions-policy': 'camera=()',
   } },
-  asset: { url: 'https://www.example.com/_next/static/app.js', headers: { 'cf-cache-status': 'HIT' } },
+  canonical: 'https://www.example.com/', mixed: [],
+  assets: [
+    { url: 'https://www.example.com/_next/static/app.js', headers: { 'cf-cache-status': 'HIT' } },
+    { url: 'https://www.example.com/logo.png', headers: { 'cf-cache-status': 'MISS' } },
+  ],
 };
 const goodDns = {
   zone: 'example.com', aaaa: ['2606:4700::1'], ds: ['2371 13 2 ABC'],
@@ -53,16 +57,37 @@ test('forgotten Cloudflare settings are flagged', () => {
     ...goodPage, navProtocol: 'h2',
     signals: { rocketLoader: true, emailDecode: true, rum: true, challenge: true },
     page: { headers: { ...goodPage.page.headers, 'alt-svc': '', 'content-encoding': 'gzip', 'strict-transport-security': 'max-age=86400' } },
-    asset: { url: 'https://www.example.com/a.css', headers: { 'cf-cache-status': 'DYNAMIC' } },
+    assets: [
+      { url: 'https://www.example.com/a.css', headers: { 'cf-cache-status': 'DYNAMIC' } },
+      { url: 'https://www.example.com/b.js', headers: { 'cf-cache-status': 'HIT' } },
+    ],
+    mixed: ['http://cdn.example.net/x.js'],
   };
   const dns = { ...goodDns, aaaa: [], ds: [], txt: ['v=spf1 include:x ?all'], dmarc: ['v=DMARC1; p=none'] };
   const r = byId(evaluate({ page, dns, redirect: { finalUrl: 'http://www.example.com/' } }, t));
   const expect = {
     http3: 'warn', compression: 'info', cache: 'warn', ipv6: 'warn', rocketLoader: 'warn', emailObf: 'info',
     rum: 'info', challenge: 'info', httpRedirect: 'fail', hsts: 'warn', dnssec: 'warn', spf: 'warn', dmarc: 'info',
+    mixed: 'warn',
   };
   for (const [id, st] of Object.entries(expect)) assert.equal(r[id].status, st, id);
   assert.ok(r.cache.fix && r.httpRedirect.fix);
+  assert.match(r.cache.detail, /a\.css → DYNAMIC/);
+  assert.doesNotMatch(r.cache.detail, /b\.js/);
+});
+
+test('www / apex variant', () => {
+  const run = (variant, canonical = goodPage.canonical) =>
+    byId(evaluate({ page: { ...goodPage, canonical }, dns: goodDns, variantHost: 'example.com', variant }, t)).hostVariant;
+  assert.equal(run(null).status, 'action');
+  assert.equal(run({ noDns: true }).status, 'pass');
+  assert.equal(run({ finalUrl: 'https://www.example.com/' }).status, 'pass');
+  assert.equal(run({ finalUrl: 'https://example.com/' }).status, 'info'); // duplicate, canonical points here
+  assert.equal(run({ finalUrl: 'https://example.com/' }, '').status, 'warn');
+  assert.equal(run({ finalUrl: 'https://shop.other.com/' }).status, 'info');
+  assert.equal(run({ error: 'timeout' }).status, 'skip');
+  // Other subdomains have no www/apex counterpart: the check isn't shown.
+  assert.equal(byId(evaluate({ page: goodPage, dns: goodDns, variantHost: '' }, t)).hostVariant, undefined);
 });
 
 test('DNS edge cases', () => {
@@ -114,7 +139,56 @@ test('findZone walks past CNAMEs to the owning zone', async () => {
   assert.equal(await findZone('shop.brand.co.uk', fake), 'brand.co.uk');
 });
 
+test('hostVariant pairs www and apex only', () => {
+  assert.equal(hostVariant('example.com', 'example.com'), 'www.example.com');
+  assert.equal(hostVariant('www.example.com', 'example.com'), 'example.com');
+  assert.equal(hostVariant('api.example.com', 'example.com'), '');
+});
+
 test('every locale has the same keys', () => {
   const tr = JSON.parse(readFileSync(new URL('../extension/_locales/tr/messages.json', import.meta.url)));
   assert.deepEqual(Object.keys(tr).sort(), Object.keys(msgs).sort());
+});
+
+// --- Regressions from the v0.2 review
+const withDns = (patch) => byId(evaluate({ page: goodPage, dns: { ...goodDns, ...patch } }, t));
+const withHeaders = (patch) => byId(evaluate({ page: { ...goodPage, page: { headers: { ...goodPage.page.headers, ...patch } } }, dns: goodDns }, t));
+
+test('SPF: "all" inside a domain name is not the all mechanism', () => {
+  assert.equal(withDns({ txt: ['v=spf1 include:spf.firewall.net -all'] }).spf.status, 'pass');
+  assert.equal(withDns({ txt: ['v=spf1 include:spf.small.net ~all'] }).spf.status, 'pass');
+  assert.equal(withDns({ txt: ['v=spf1 include:x.net ?all'] }).spf.status, 'warn');
+  assert.equal(withDns({ txt: ['v=spf1 include:x.net'] }).spf.status, 'warn'); // no all at all
+  assert.equal(withDns({ txt: ['v=spf1 redirect=_spf.x.net'] }).spf.status, 'pass');
+});
+
+test('CAA forbid-all on a proxied zone warns', () => {
+  assert.equal(withDns({ caa: [{ flags: 0, tag: 'issue', value: ';' }] }).caa.status, 'warn');
+  assert.equal(withDns({ caa: [{ flags: 0, tag: 'iodef', value: 'mailto:a@b.c' }] }).caa.status, 'pass');
+});
+
+test('frame protection rejects wildcards and invalid XFO', () => {
+  assert.equal(withHeaders({ 'content-security-policy': "default-src 'self'; frame-ancestors *" }).frame.status, 'warn');
+  assert.equal(withHeaders({ 'content-security-policy': "default-src 'self'", 'x-frame-options': 'ALLOWALL' }).frame.status, 'warn');
+  assert.equal(withHeaders({ 'content-security-policy': "default-src 'self'", 'x-frame-options': 'SAMEORIGIN' }).frame.status, 'pass');
+});
+
+test('an invalid canonical URL does not throw', () => {
+  const r = byId(evaluate({ page: { ...goodPage, canonical: 'http://[bad' }, dns: goodDns,
+    variantHost: 'example.com', variant: { finalUrl: 'https://example.com/' } }, t));
+  assert.equal(r.hostVariant.status, 'warn');
+});
+
+test('findZone ignores the SOA of a CNAME target', async () => {
+  const resp = {
+    'www.example.org': { Answer: [{ name: 'www.example.org', type: 5, data: 'example.com.' }, { name: 'example.com', type: 6 }] },
+    'example.org': { Answer: [{ name: 'example.org.', type: 6 }] },
+  };
+  const fake = async (url) => ({ ok: true, json: async () => resp[new URL(url).searchParams.get('name')] || {} });
+  assert.equal(await findZone('www.example.org', fake), 'example.org');
+});
+
+test('IP literals and single-label hosts skip DNS', () => {
+  for (const h of ['192.168.1.10', 'localhost', '[::1]', '2001:db8::1']) assert.equal(isDnsName(h), false, h);
+  assert.equal(isDnsName('example.com'), true);
 });

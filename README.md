@@ -10,7 +10,8 @@ Click the toolbar icon on a site:
    Cloudflare scripts (Rocket Loader, email-decode, Web Analytics beacon, challenge-platform).
 2. `dns.js` queries Cloudflare DoH (`cloudflare-dns.com`, CORS-enabled): zone, AAAA, DS, CAA, SPF, DMARC.
 3. `checks.js` (pure, unit-tested) turns that into pass / warn / fail / info results with fix hints.
-4. HTTP→HTTPS redirect needs `http://<host>/*`; requested per site, only when the user clicks "Check".
+4. "Run deep checks" asks, per site, for the host's http/https origins and its www/apex counterpart,
+   then verifies the HTTP→HTTPS and www↔apex redirects. Once granted, they run on every scan of that site.
 
 Install-time permissions: `activeTab`, `scripting`, `storage` — no host access warning.
 Ignored checks are stored in `chrome.storage.sync`.
@@ -25,10 +26,17 @@ npm run icons     # tools/assets/icon.svg -> icons/*.png
 npm test          # rule engine unit tests
 npm run e2e -- https://example.com/   # real Chrome + real popup against live sites
 npm run zip       # edgecheck.zip for the Chrome Web Store
+npm run store     # store/ screenshots + promo tile (needs store/raw captures, see tools/store-assets.js)
 ```
+`EC_NARROW=1 npm run e2e -- <url>` grants only the scanned https origin (like activeTab), so deep checks stay pending.
 Load unpacked: `chrome://extensions` → Developer mode → Load unpacked → `extension/`.
 
-## Chrome Web Store notes
+## Chrome Web Store
+Everything for the submission is in `store/`: `listing.md` (descriptions EN/TR, single purpose,
+permission justifications, data-usage answers), `privacy.html` (must be hosted at a public URL),
+screenshots and the promo tile.
+
+### Notes
 - Privacy policy must disclose: the hostname being scanned is sent to Cloudflare's public DNS
   resolver (cloudflare-dns.com) for DNS lookups. Nothing else leaves the browser; no analytics.
 - Name uses "Cloudflare" descriptively; the extension is not affiliated with Cloudflare, Inc.
