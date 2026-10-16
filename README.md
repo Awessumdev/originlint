@@ -54,3 +54,7 @@ screenshots and the promo tile.
   resolver (cloudflare-dns.com) for DNS lookups. Nothing else leaves the browser; no analytics.
 - Name uses "Cloudflare" descriptively; the extension is not affiliated with Cloudflare, Inc.
   (say so in the store description). No Cloudflare logo or orange in the branding.
+
+## License
+[MIT](LICENSE). Cloudflare is a trademark of Cloudflare, Inc.; OriginLint is an independent tool,
+not affiliated with or endorsed by Cloudflare.
