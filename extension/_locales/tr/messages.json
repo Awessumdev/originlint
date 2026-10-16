@@ -1,4 +1,100 @@
 {
+  "zonesLink": {
+    "message": "Hesaptaki tüm alan adlarını tara →"
+  },
+  "zones_title": {
+    "message": "Tüm alan adları"
+  },
+  "zones_scan": {
+    "message": "Tümünü tara"
+  },
+  "zones_daily": {
+    "message": "Her gün tara ve bildir"
+  },
+  "zones_onlyProblems": {
+    "message": "Yalnızca sorunlu alan adları"
+  },
+  "zones_footer": {
+    "message": "API token'ınızın görebildiği her alan adını, popup'takiyle aynı salt okunur isteklerle okur. Dışarıdan yapılan kontroller (başlıklar, yönlendirmeler) sitenin bir sekmede açık olmasını gerektirdiği için bu sayfada yok."
+  },
+  "zones_empty": {
+    "message": "Henüz tarama yok. \"Tümünü tara\"ya tıklayın."
+  },
+  "zones_allClean": {
+    "message": "Hiçbir alan adında hata ya da uyarı yok."
+  },
+  "zones_lastScan": {
+    "message": "Son tarama: $1"
+  },
+  "zones_comparedTo": {
+    "message": "$1 ile karşılaştırıldı"
+  },
+  "zones_tileZones": {
+    "message": "alan adı"
+  },
+  "zones_tileFail": {
+    "message": "hatalı"
+  },
+  "zones_tileWarn": {
+    "message": "uyarılı"
+  },
+  "zones_tileChanged": {
+    "message": "yeni sorunlu"
+  },
+  "zones_newProblems": {
+    "message": "$1 yeni"
+  },
+  "zones_fixed": {
+    "message": "$1 düzeldi"
+  },
+  "zones_clean": {
+    "message": "sorun yok"
+  },
+  "zones_scanning": {
+    "message": "Alan adları listeleniyor…"
+  },
+  "zones_progress": {
+    "message": "$2 alan adının $1 tanesi tarandı, yaklaşık $3 dk kaldı. İstekler Cloudflare sınırının altında kalacak hızda gönderiliyor; bu sekmeyi açık tutun."
+  },
+  "zones_failed": {
+    "message": "Tarama başarısız: $1"
+  },
+  "zones_rateLimited": {
+    "message": "Cloudflare API istek sınırına ulaşıldı; $1 alan adı taranmadı. Birkaç dakika bekleyip kalanları tarayın."
+  },
+  "zones_rateLimitedWait": {
+    "message": "Cloudflare API istek sınırına ulaşıldı; $1 alan adı taranmadı. Yaklaşık $2 dakika sonra taranabilir."
+  },
+  "zones_stale": {
+    "message": "yeniden taranmadı"
+  },
+  "zones_busy": {
+    "message": "Başka bir tarama sürüyor (başka bir sekme ya da günlük tarama). Bitince tekrar deneyin."
+  },
+  "zones_scanRest": {
+    "message": "Kalanları tara"
+  },
+  "zones_noToken": {
+    "message": "Bu sayfa için bir Cloudflare API token gerekiyor. Ayarlar sayfasından ekleyin."
+  },
+  "zones_openOptions": {
+    "message": "Ayarları aç"
+  },
+  "zones_dailyOn": {
+    "message": "Günlük tarama açık. Bir alan adında yeni sorun çıkınca bildirim alacaksınız."
+  },
+  "zones_dailyOff": {
+    "message": "Günlük tarama kapalı."
+  },
+  "zones_notifyDenied": {
+    "message": "Günlük tarama için bildirim gösterme izni gerekiyor."
+  },
+  "notifyTitle": {
+    "message": "OriginLint: $1 alan adında yeni sorun"
+  },
+  "api_alwaysHttps_bulk": {
+    "message": "Kapalı. Origin HTTPS'e yönlendiriyorsa sorun değil; doğrulamak için sitenin popup'ında derin kontrolleri çalıştırın."
+  },
   "grp_account": {
     "message": "Cloudflare hesabı (API)"
   },
@@ -255,7 +351,7 @@
     "message": "Token nereye gider"
   },
   "opt_privacy_text": {
-    "message": "Token yalnızca bu tarayıcıda saklanır (chrome.storage.local, senkronlanmaz) ve yalnızca api.cloudflare.com'a gönderilir. OriginLint yalnızca okur, hiçbir ayarı değiştirmez."
+    "message": "Token yalnızca bu tarayıcıda saklanır (chrome.storage.local, senkronlanmaz) ve yalnızca api.cloudflare.com'a gönderilir. OriginLint yalnızca okur, hiçbir ayarı değiştirmez. Token'ı silmek kaydedilen alan adı raporlarını da siler ve günlük taramayı kapatır."
   },
   "appName": {
     "message": "OriginLint — Cloudflare® siteleri için ayar denetçisi"

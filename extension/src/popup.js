@@ -163,7 +163,12 @@ function renderDeep() {
 function renderApiLink() {
   const box = $('apiLink');
   if (state.acctLoading) return box.replaceChildren(el('span', 'deep-note', t('apiLoading')));
-  if (state.hasToken) return box.replaceChildren();
+  if (state.hasToken) {
+    const z = el('button', 'linklike', t('zonesLink'));
+    z.type = 'button';
+    z.addEventListener('click', () => chrome.tabs.create({ url: chrome.runtime.getURL('src/zones.html') }));
+    return box.replaceChildren(z);
+  }
   const a = el('button', 'linklike', t('apiAdd'));
   a.type = 'button';
   a.addEventListener('click', () => chrome.runtime.openOptionsPage());

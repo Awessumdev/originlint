@@ -1,4 +1,100 @@
 {
+  "zonesLink": {
+    "message": "Scan all zones in the account →"
+  },
+  "zones_title": {
+    "message": "All zones"
+  },
+  "zones_scan": {
+    "message": "Scan all zones"
+  },
+  "zones_daily": {
+    "message": "Scan daily and notify me"
+  },
+  "zones_onlyProblems": {
+    "message": "Only zones with problems"
+  },
+  "zones_footer": {
+    "message": "Reads every zone your API token can see, with the same read-only requests as the popup. Outside checks (headers, redirects) need the site open in a tab, so they aren't part of this page."
+  },
+  "zones_empty": {
+    "message": "No scan yet. Click \"Scan all zones\"."
+  },
+  "zones_allClean": {
+    "message": "No zone has errors or warnings."
+  },
+  "zones_lastScan": {
+    "message": "Last scan: $1"
+  },
+  "zones_comparedTo": {
+    "message": "compared with $1"
+  },
+  "zones_tileZones": {
+    "message": "zones"
+  },
+  "zones_tileFail": {
+    "message": "with errors"
+  },
+  "zones_tileWarn": {
+    "message": "with warnings"
+  },
+  "zones_tileChanged": {
+    "message": "new problems"
+  },
+  "zones_newProblems": {
+    "message": "$1 new"
+  },
+  "zones_fixed": {
+    "message": "$1 fixed"
+  },
+  "zones_clean": {
+    "message": "all good"
+  },
+  "zones_scanning": {
+    "message": "Listing zones…"
+  },
+  "zones_progress": {
+    "message": "Scanned $1 of $2 zones, about $3 min left. Requests are paced to stay under Cloudflare's rate limit; keep this tab open."
+  },
+  "zones_failed": {
+    "message": "Scan failed: $1"
+  },
+  "zones_rateLimited": {
+    "message": "Cloudflare's API rate limit was reached; $1 zone(s) weren't scanned. Wait a few minutes, then scan the rest."
+  },
+  "zones_rateLimitedWait": {
+    "message": "Cloudflare's API rate limit was reached; $1 zone(s) weren't scanned. You can scan them in about $2 min."
+  },
+  "zones_stale": {
+    "message": "not rescanned"
+  },
+  "zones_busy": {
+    "message": "Another scan is already running (another tab or the daily scan). Try again when it finishes."
+  },
+  "zones_scanRest": {
+    "message": "Scan the rest"
+  },
+  "zones_noToken": {
+    "message": "This page needs a Cloudflare API token. Add one in the options page."
+  },
+  "zones_openOptions": {
+    "message": "Open options"
+  },
+  "zones_dailyOn": {
+    "message": "Daily scan is on. You'll get a notification when a zone has a new problem."
+  },
+  "zones_dailyOff": {
+    "message": "Daily scan is off."
+  },
+  "zones_notifyDenied": {
+    "message": "The daily scan needs permission to show notifications."
+  },
+  "notifyTitle": {
+    "message": "OriginLint: new problems in $1 zone(s)"
+  },
+  "api_alwaysHttps_bulk": {
+    "message": "Off. Fine if the origin redirects to HTTPS; open the site's popup and run the deep checks to confirm."
+  },
   "grp_account": {
     "message": "Cloudflare account (API)"
   },
@@ -255,7 +351,7 @@
     "message": "Where the token goes"
   },
   "opt_privacy_text": {
-    "message": "The token is stored only in this browser (chrome.storage.local, not synced) and is sent only to api.cloudflare.com. OriginLint only reads; it never changes a setting."
+    "message": "The token is stored only in this browser (chrome.storage.local, not synced) and is sent only to api.cloudflare.com. OriginLint only reads; it never changes a setting. Removing the token also deletes the saved zone reports and turns off the daily scan."
   },
   "appName": {
     "message": "OriginLint — setup checker for Cloudflare® sites"

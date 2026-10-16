@@ -32,6 +32,15 @@ The options page (`src/options.html`) takes a read-only Cloudflare API token
 - An API check that could be read replaces its outside twin (Rocket Loader, email obfuscation, DNSSEC).
 - `EC_FAKEAPI=1 npm run e2e -- <url>` runs the popup against a fake api.cloudflare.com fixture.
 
+## All zones (API mode)
+`src/zones.html` scans every zone the token can see (`src/zonescan.js`): 3 zones at a time,
+~17 requests each, stopping cleanly on a 429 and offering to scan the rest. The last report and a
+per-zone status snapshot live in `chrome.storage.local` (`src/zonestore.js`), so the next scan shows
+"new" and "fixed" badges. "Scan daily and notify me" sets a `chrome.alarms` alarm answered by the
+module service worker (`src/background.js`), which notifies only about new problems; the
+notifications permission is optional and requested from that toggle.
+`npm run e2e:zones` runs the page and the daily alarm against a fake API in Chrome.
+
 ## Development
 ```bash
 npm run locales   # tools/gen_locales.py -> _locales/{en,tr}

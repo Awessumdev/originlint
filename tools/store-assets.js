@@ -20,6 +20,8 @@ const COPY = {
       'Each issue points to the place in the Cloudflare dashboard where you change it. Ignore the ones that don’t fit your setup.'],
     ['See what’s hidden from outside',
       'Add a read-only API token to check SSL mode, minimum TLS, a forgotten Development Mode, DNSSEC status and more. The token goes only to Cloudflare’s API.'],
+    ['Every zone, one page',
+      'Scan all zones in your account, worst first, with “new” badges since the last scan. Turn on the daily scan to get a notification when something breaks.'],
   ],
   tr: [
     ['Unuttuğunuz Cloudflare ayarlarını bulun',
@@ -28,6 +30,8 @@ const COPY = {
       'Her sorun, Cloudflare panelinde nereden düzelteceğinizi gösterir. Kurulumunuza uymayanları yoksayın.'],
     ['Dışarıdan görünmeyeni de görün',
       'Salt okunur bir API token ekleyin; SSL modu, minimum TLS, açık unutulmuş Development Mode, DNSSEC durumu ve fazlası kontrol edilsin. Token yalnızca Cloudflare API’sine gider.'],
+    ['Tüm alan adları tek sayfada',
+      'Hesabınızdaki tüm alan adlarını tarayın; en sorunlusu üstte, son taramadan beri “yeni” etiketleriyle. Bir şey bozulunca bildirim almak için günlük taramayı açın.'],
   ],
 };
 
@@ -36,6 +40,24 @@ const BASE = `
   *{box-sizing:border-box} html,body{margin:0}
   body{font-family:"IBM Plex Sans",system-ui,sans-serif;color:#10201f;
     background:radial-gradient(120% 90% at 0% 0%,#e6f4f2 0%,#f5f8f8 55%,#eef2f2 100%)}`;
+
+// The zones page is a full tab, not a popup: text on top, the page below in a wide frame.
+function wideHtml(lang, idx, shot) {
+  const [h, p] = COPY[lang][idx];
+  return `${FONT}<style>${BASE}
+    .wrap{width:1280px;height:800px;display:grid;grid-template-rows:auto 1fr;gap:28px;padding:48px 88px 0}
+    .top{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:end}
+    .brand{display:flex;gap:12px;align-items:center;font-weight:700;font-size:22px;color:#0f766e}
+    .brand img{width:40px;height:40px}
+    h1{font-size:44px;line-height:1.08;margin:18px 0 0;letter-spacing:-.01em}
+    p{font-size:20px;line-height:1.5;color:#40524f;margin:0;max-width:560px}
+    .frame{border-radius:14px 14px 0 0;overflow:hidden;background:#fff;
+      box-shadow:0 30px 60px -20px rgba(15,60,56,.35),0 0 0 1px rgba(15,60,56,.08);position:relative}
+    .frame img{width:1104px;display:block}
+  </style>
+  <div class="wrap"><div class="top"><div><div class="brand"><img src="${icon}" alt="">OriginLint</div><h1>${h}</h1></div><p>${p}</p></div>
+  <div class="frame"><img src="data:image/png;base64,${shot}" alt=""></div></div>`;
+}
 
 function screenshotHtml(lang, idx, shot) {
   const [h, p] = COPY[lang][idx];
@@ -77,6 +99,8 @@ async function render(html, w, h, out) {
 for (const lang of ['en', 'tr']) {
   const shots = ['', '-fix', '-api'].map((suffix) => b64(`store/raw/example.com-${lang}${suffix}.png`));
   for (const idx of [0, 1, 2]) await render(screenshotHtml(lang, idx, shots[idx]), 1280, 800, `store/screenshot-${lang}-${idx + 1}.png`);
+  // 4: the zones page (test/e2e-zones.js with EC_SHOTS=store/raw)
+  await render(wideHtml(lang, 3, b64(`store/raw/zones-${lang}.png`)), 1280, 800, `store/screenshot-${lang}-4.png`);
 }
 await render(promoHtml, 440, 280, 'store/promo-small.png');
 await browser.close();

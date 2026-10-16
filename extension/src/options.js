@@ -1,5 +1,6 @@
 import { API_ORIGIN, verifyToken } from './cfapi.js';
 import { TOKEN_PERMISSIONS } from './apichecks.js';
+import { forgetAccount } from './zonestore.js';
 
 const t = (key, subs) => chrome.i18n.getMessage(key, subs && subs.map(String)) || key;
 const $ = (id) => document.getElementById(id);
@@ -25,6 +26,7 @@ async function showSaved() {
   let saved = '';
   try { ({ cfToken: saved = '' } = await chrome.storage.local.get('cfToken')); } catch {}
   $('remove').hidden = !saved;
+  $('zonesLink').hidden = !saved;
   if (saved) setStatus(t('opt_saved', [saved.slice(-4)]), 'ok');
 }
 
@@ -53,9 +55,11 @@ $('form').addEventListener('submit', async (e) => {
 });
 
 $('remove').addEventListener('click', async () => {
-  try { await chrome.storage.local.remove('cfToken'); } catch {}
+  // Token, zone reports, daily scan and the notifications permission all go together.
+  try { await forgetAccount(); } catch {}
   try { await chrome.permissions.remove({ origins: [API_ORIGIN] }); } catch {}
   $('remove').hidden = true;
+  $('zonesLink').hidden = true;
   setStatus(t('opt_removed'));
 });
 

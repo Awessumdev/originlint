@@ -42,7 +42,8 @@ const SETTING_CHECK = {
 // Certificate packs that are on their way out don't count against the zone.
 const RETIRED_PACKS = ['deleted', 'expired', 'pending_deletion', 'deactivating', 'inactive'];
 
-export function evaluateAccount(acct, outside, t) {
+// opts.bulk: evaluated from the zones page, with no outside scan to confirm an origin redirect.
+export function evaluateAccount(acct, outside, t, opts = {}) {
   const out = [];
   const add = (id, status, detail) => out.push({
     id, group: 'account', status, title: t(`check_${id}`), detail,
@@ -96,6 +97,7 @@ export function evaluateAccount(acct, outside, t) {
     const always = v('always_use_https');
     if (always === 'on') add('api_alwaysHttps', 'pass', t('api_on'));
     else if (always === 'off' && outsideStatus('httpRedirect') === 'pass') add('api_alwaysHttps', 'pass', t('api_alwaysHttps_origin'));
+    else if (always === 'off' && opts.bulk) add('api_alwaysHttps', 'info', t('api_alwaysHttps_bulk'));
     else if (always === 'off') add('api_alwaysHttps', 'warn', t('api_alwaysHttps_off'));
 
     const rewrites = v('automatic_https_rewrites');

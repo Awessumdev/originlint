@@ -30,3 +30,4 @@ input[aria-invalid="true"] { border-color: var(--fail); }
 .opt-status.ok { color: var(--pass); }
 .opt-status.error { color: var(--fail); }
 .card p { margin: 0; }
+.opt-zones { color: var(--accent); font-weight: 600; justify-self: start; }

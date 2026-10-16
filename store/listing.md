@@ -1,4 +1,4 @@
-# Chrome Web Store listing — OriginLint 0.4.0
+# Chrome Web Store listing — OriginLint 0.5.0
 
 ## Name (from _locales)
 - en: OriginLint — setup checker for Cloudflare® sites
@@ -20,6 +20,8 @@ Open any website, click the OriginLint icon, and get a report in a few seconds:
 
 Optional API mode: paste a read-only Cloudflare API token and OriginLint also checks what can't be seen from outside: SSL/TLS encryption mode, minimum TLS version, TLS 1.3, Always Use HTTPS, a forgotten Development Mode or "I'm Under Attack" mode, DNSSEC waiting for the registrar, DNS-only records and edge certificate status. The token stays in your browser and goes only to api.cloudflare.com.
 
+All zones: with a token, scan every zone in your account on one page, worst first, with "new" and "fixed" badges since the last scan. Turn on the daily scan to get a notification when something breaks.
+
 Every finding tells you where to fix it in the Cloudflare dashboard. If a check doesn't fit your setup, ignore it and it stays out of your way. Copy the whole report as Markdown for a ticket or a client.
 
 Without a token, OriginLint only looks at what a site shows publicly, so it works on any site, including ones you don't own.
@@ -39,6 +41,8 @@ Herhangi bir siteyi açın, OriginLint simgesine tıklayın, birkaç saniyede ra
 • DNS ve e-posta: DNSSEC, CAA, SPF, DMARC
 
 İsteğe bağlı API modu: salt okunur bir Cloudflare API token yapıştırın; OriginLint dışarıdan görünmeyenleri de kontrol etsin: SSL/TLS şifreleme modu, minimum TLS sürümü, TLS 1.3, Always Use HTTPS, açık unutulmuş Development Mode ya da "I'm Under Attack" modu, kayıt firmasında bekleyen DNSSEC, DNS-only kayıtlar ve edge sertifika durumu. Token tarayıcınızda kalır ve yalnızca api.cloudflare.com'a gider.
+
+Tüm alan adları: token ile hesabınızdaki tüm alan adlarını tek sayfada, en sorunlusu üstte olacak şekilde tarayın; son taramadan beri "yeni" ve "düzeldi" etiketleriyle. Bir şey bozulduğunda bildirim almak için günlük taramayı açın.
 
 Her bulgu, Cloudflare panelinde nereden düzelteceğinizi gösterir. Kurulumunuza uymayan bir kontrolü yoksayabilirsiniz. Raporun tamamını Markdown olarak kopyalayıp bir iş kaydına ya da müşterinize iletebilirsiniz.
 
@@ -64,6 +68,12 @@ After the user clicks, injects a script bundled with the extension into the acti
 
 **storage**
 Stores the list of checks the user chose to ignore (chrome.storage.sync, the user's own Chrome sync) and, only if the user enables API mode, their Cloudflare API token (chrome.storage.local, never synced). Nothing goes to a developer server.
+
+**alarms**
+Used only when the user turns on "Scan daily and notify me" on the All zones page: one daily alarm wakes the extension to re-scan the user's own Cloudflare zones through the API. Turning the option off or removing the API token clears the alarm.
+
+**notifications (optional)**
+Requested when the user turns on the daily scan, to tell them which zones have a new problem. Removed again when the user turns it off.
 
 **Optional host permissions (http://\*/\*, https://\*/\*)**
 Never granted at install. Requested in two cases, each from an explicit user click: (1) "Run deep checks", for one site at a time, limited to that site's http:// and https:// addresses and its www/root counterpart, to verify the HTTP→HTTPS and www↔root redirects; (2) saving a Cloudflare API token in the options page, for https://api.cloudflare.com/* only, to make read-only API requests. Removing the token revokes (2).

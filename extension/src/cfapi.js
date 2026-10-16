@@ -5,11 +5,15 @@ export const API_ORIGIN = 'https://api.cloudflare.com/*';
 const TIMEOUT_MS = 10000;
 
 export class ApiError extends Error {
-  constructor(status, errors) {
+  constructor(status, errors, retryAfter = 0) {
     const first = (errors && errors[0]) || {};
     super(first.message || `HTTP ${status}`);
     this.status = status;
     this.code = first.code || 0;
+    this.retryAfter = retryAfter; // seconds, set on 429
+  }
+  get rateLimited() {
+    return this.status === 429;
   }
   // 403 / code 10000 mean "this token can't read that": shown as a missing permission, not a failure.
   get forbidden() {
@@ -26,7 +30,10 @@ async function get(token, path, fetchImpl = fetch) {
   });
   let body = null;
   try { body = await r.json(); } catch {}
-  if (!r.ok || !body || body.success === false) throw new ApiError(r.status, body && body.errors);
+  if (!r.ok || !body || body.success === false) {
+    const retry = r.headers && typeof r.headers.get === 'function' ? Number(r.headers.get('retry-after')) || 0 : 0;
+    throw new ApiError(r.status, body && body.errors, retry);
+  }
   return body;
 }
 
@@ -54,6 +61,8 @@ export const SETTING_IDS = ['ssl', 'ssl_automatic_mode', 'min_tls_version', 'tls
 async function zoneSettings(token, zoneId, fetchImpl) {
   const results = await Promise.allSettled(SETTING_IDS.map((id) =>
     get(token, `/zones/${zoneId}/settings/${id}`, fetchImpl).then((b) => b.result)));
+  const limited = results.find((r) => r.status === 'rejected' && r.reason instanceof ApiError && r.reason.rateLimited);
+  if (limited) throw limited.reason;
   // Nothing readable at all: report why (usually a missing Zone Settings permission).
   if (results.every((r) => r.status === 'rejected')) throw results[0].reason;
   const map = {};
@@ -99,11 +108,31 @@ async function greyRecords(token, zoneId, fetchImpl) {
   return { records: perType.flatMap((p) => p.records), partial: perType.some((p) => p.partial) };
 }
 
-// Each part settles on its own so one missing permission only blanks that part.
+// Every zone the token can see (GET /zones accepts per_page 5-50).
+export async function listZones(token, fetchImpl) {
+  const zones = [];
+  for (let page = 1; page <= 100; page++) {
+    const body = await get(token, `/zones?per_page=50&page=${page}`, fetchImpl);
+    zones.push(...(body.result || []).map((z) => ({ id: z.id, name: z.name, status: z.status })));
+    const pages = (body.result_info || {}).total_pages || 1;
+    if (page >= pages) break;
+  }
+  return zones;
+}
+
 export async function collectAccount(token, host, fetchImpl) {
   const zone = await findZone(token, host, fetchImpl);
   if (!zone) return { zone: null };
-  const settle = (p) => p.then((value) => ({ value }), (error) => ({ error }));
+  return collectZone(token, zone, fetchImpl);
+}
+
+// Each part settles on its own so one missing permission only blanks that part.
+// A rate limit anywhere is rethrown, so a bulk scan can stop instead of filling in skips.
+export async function collectZone(token, zone, fetchImpl) {
+  const settle = (p) => p.then((value) => ({ value }), (error) => {
+    if (error instanceof ApiError && error.rateLimited) throw error;
+    return { error };
+  });
   const [settings, dnssec, records, certs] = await Promise.all([
     settle(zoneSettings(token, zone.id, fetchImpl)),
     settle(get(token, `/zones/${zone.id}/dnssec`, fetchImpl).then((b) => b.result)),

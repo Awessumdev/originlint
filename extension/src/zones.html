@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OriginLint</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="zones.css">
+</head>
+<body class="zones">
+  <header class="z-head">
+    <div class="z-title">
+      <img src="../icons/icon-48.png" alt="" width="32" height="32">
+      <div>
+        <h1 data-i18n="zones_title"></h1>
+        <p id="lastScan" class="muted"></p>
+      </div>
+    </div>
+    <div class="z-actions">
+      <label class="toggle"><input id="daily" type="checkbox"> <span data-i18n="zones_daily"></span></label>
+      <button id="scan" type="button" class="primary" data-i18n="zones_scan"></button>
+    </div>
+  </header>
+
+  <main class="z-main">
+    <p id="notice" class="z-notice" role="status" hidden></p>
+    <div id="progress" class="z-progress" hidden><div id="bar"></div></div>
+
+    <section id="summary" class="z-summary" aria-label="" hidden></section>
+
+    <div id="filters" class="z-filters" hidden>
+      <label class="toggle"><input id="onlyProblems" type="checkbox" checked> <span data-i18n="zones_onlyProblems"></span></label>
+    </div>
+
+    <section id="list" class="z-list"></section>
+  </main>
+
+  <footer class="foot z-foot">
+    <p data-i18n="zones_footer"></p>
+    <p id="version"></p>
+  </footer>
+  <script type="module" src="zones.js"></script>
+</body>
+</html>
