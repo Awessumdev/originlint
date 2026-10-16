@@ -1,0 +1,35 @@
+# EdgeCheck — Cloudflare setup checker
+
+Chrome (MV3) extension that spots forgotten Cloudflare, HTTPS, security-header and DNS settings
+on any site **from the outside** — no Cloudflare account or API token needed.
+
+## How it works
+Click the toolbar icon on a site:
+1. `collect.js` is injected into the tab (`activeTab` + `scripting`): re-fetches the page and one
+   same-origin static file to read response headers, and reads resource timing for injected
+   Cloudflare scripts (Rocket Loader, email-decode, Web Analytics beacon, challenge-platform).
+2. `dns.js` queries Cloudflare DoH (`cloudflare-dns.com`, CORS-enabled): zone, AAAA, DS, CAA, SPF, DMARC.
+3. `checks.js` (pure, unit-tested) turns that into pass / warn / fail / info results with fix hints.
+4. HTTP→HTTPS redirect needs `http://<host>/*`; requested per site, only when the user clicks "Check".
+
+Install-time permissions: `activeTab`, `scripting`, `storage` — no host access warning.
+Ignored checks are stored in `chrome.storage.sync`.
+
+**Not visible from outside:** SSL mode, minimum TLS version, WAF / rules. (Account mode with a
+read-only API token would be a separate feature.)
+
+## Development
+```bash
+npm run locales   # tools/gen_locales.py -> _locales/{en,tr}
+npm run icons     # tools/assets/icon.svg -> icons/*.png
+npm test          # rule engine unit tests
+npm run e2e -- https://example.com/   # real Chrome + real popup against live sites
+npm run zip       # edgecheck.zip for the Chrome Web Store
+```
+Load unpacked: `chrome://extensions` → Developer mode → Load unpacked → `extension/`.
+
+## Chrome Web Store notes
+- Privacy policy must disclose: the hostname being scanned is sent to Cloudflare's public DNS
+  resolver (cloudflare-dns.com) for DNS lookups. Nothing else leaves the browser; no analytics.
+- Name uses "Cloudflare" descriptively; the extension is not affiliated with Cloudflare, Inc.
+  (say so in the store description). No Cloudflare logo or orange in the branding.

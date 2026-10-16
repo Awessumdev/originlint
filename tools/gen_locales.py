@@ -1,0 +1,200 @@
+#!/usr/bin/env python3
+"""Single source for UI strings -> extension/_locales/{en,tr}/messages.json"""
+import json
+from pathlib import Path
+
+S = {
+    # key: (en, tr)
+    "appName": ("EdgeCheck — Cloudflare setup checker", "EdgeCheck — Cloudflare ayar denetçisi"),
+    "appDesc": ("Spot forgotten Cloudflare, HTTPS, security header and DNS settings on any site, from the outside.",
+                "Herhangi bir sitede unutulmuş Cloudflare, HTTPS, güvenlik başlığı ve DNS ayarlarını dışarıdan tespit eder."),
+    "scanning": ("Scanning…", "Taranıyor…"),
+    "notWeb": ("Open a website (http or https) and click the icon again.", "Bir web sitesi (http veya https) açıp simgeye tekrar tıklayın."),
+    "scanFailed": ("Couldn't read this page: $1", "Bu sayfa okunamadı: $1"),
+    "rescan": ("Rescan", "Yeniden tara"),
+    "copyReport": ("Copy report", "Raporu kopyala"),
+    "copied": ("Copied", "Kopyalandı"),
+    "mute": ("Ignore", "Yoksay"),
+    "unmute": ("Restore", "Geri al"),
+    "ignored": ("Ignored ($1)", "Yoksayılanlar ($1)"),
+    "howToFix": ("How to fix", "Nasıl düzeltilir"),
+    "check": ("Check", "Kontrol et"),
+    "none": ("none", "yok"),
+    "onCf": ("On Cloudflare", "Cloudflare'de"),
+    "notCf": ("Not proxied", "Proxy yok"),
+    "zoneLabel": ("Zone: $1", "Alan: $1"),
+    "sumFail": ("errors", "hata"),
+    "sumWarn": ("warnings", "uyarı"),
+    "sumInfo": ("notes", "not"),
+    "sumPass": ("passed", "geçti"),
+    "limits": ("SSL mode, minimum TLS version and WAF rules aren't visible from outside. This scan only reports what the site exposes publicly.",
+               "SSL modu, minimum TLS sürümü ve WAF kuralları dışarıdan görünmez. Bu tarama yalnızca sitenin herkese açık gösterdiklerini raporlar."),
+    "skippedNotCf": ("Skipped: the site isn't behind the Cloudflare proxy.", "Atlandı: site Cloudflare proxy'si arkasında değil."),
+    "dnsFailed": ("DNS lookup failed: $1", "DNS sorgusu başarısız: $1"),
+    "st_pass": ("OK", "Tamam"), "st_warn": ("Warning", "Uyarı"), "st_fail": ("Error", "Hata"),
+    "st_info": ("Note", "Not"), "st_skip": ("Skipped", "Atlandı"), "st_action": ("Needs check", "Kontrol gerekli"),
+
+    "grp_cloudflare": ("Cloudflare", "Cloudflare"),
+    "grp_https": ("HTTPS", "HTTPS"),
+    "grp_headers": ("Security headers", "Güvenlik başlıkları"),
+    "grp_dns": ("DNS & email", "DNS ve e-posta"),
+
+    "check_proxied": ("Cloudflare proxy", "Cloudflare proxy"),
+    "proxied_pass": ("Traffic goes through Cloudflare (cf-ray $1).", "Trafik Cloudflare üzerinden geçiyor (cf-ray $1)."),
+    "proxied_fail": ("No Cloudflare headers. The record may be DNS-only (grey cloud) or the site isn't on Cloudflare.",
+                     "Cloudflare başlığı yok. Kayıt DNS-only (gri bulut) olabilir ya da site Cloudflare'de değil."),
+    "fix_proxied": ("DNS › Records: set the record's proxy status to Proxied (orange cloud).",
+                    "DNS › Records: kaydın proxy durumunu Proxied (turuncu bulut) yapın."),
+
+    "check_http3": ("HTTP/3 (QUIC)", "HTTP/3 (QUIC)"),
+    "http3_pass": ("This page loaded over HTTP/3.", "Bu sayfa HTTP/3 ile yüklendi."),
+    "http3_advertised": ("HTTP/3 is advertised (alt-svc); this load used $1.", "HTTP/3 duyuruluyor (alt-svc); bu yükleme $1 kullandı."),
+    "http3_fail": ("HTTP/3 isn't advertised.", "HTTP/3 duyurulmuyor."),
+    "fix_http3": ("Speed › Optimization › Protocol Optimization › HTTP/3 (with QUIC): on.",
+                  "Speed › Optimization › Protocol Optimization › HTTP/3 (with QUIC): açın."),
+
+    "check_compression": ("Compression", "Sıkıştırma"),
+    "compression_pass": ("HTML is compressed with $1.", "HTML $1 ile sıkıştırılıyor."),
+    "compression_gzip": ("HTML uses gzip; Brotli or Zstandard is smaller.", "HTML gzip kullanıyor; Brotli veya Zstandard daha küçük."),
+    "compression_fail": ("HTML isn't compressed.", "HTML sıkıştırılmıyor."),
+    "fix_compression": ("Rules › Compression Rules, and make sure the origin doesn't send Cache-Control: no-transform.",
+                        "Rules › Compression Rules; origin'in Cache-Control: no-transform göndermediğinden emin olun."),
+
+    "check_cache": ("Edge cache for static files", "Statik dosyalar için edge önbelleği"),
+    "cache_pass": ("$1 → cf-cache-status: $2", "$1 → cf-cache-status: $2"),
+    "cache_fail": ("$1 → cf-cache-status: $2. Static files aren't being cached.", "$1 → cf-cache-status: $2. Statik dosyalar önbelleğe alınmıyor."),
+    "cache_none": ("No same-origin static file found to test.", "Test edilecek aynı kaynaklı statik dosya bulunamadı."),
+    "fix_cache": ("Caching › Cache Rules: cache static paths, and check the origin doesn't send Cache-Control: private or no-store.",
+                  "Caching › Cache Rules: statik yolları önbelleğe alın; origin'in Cache-Control: private veya no-store göndermediğini kontrol edin."),
+
+    "check_ipv6": ("IPv6", "IPv6"),
+    "ipv6_pass": ("AAAA record found.", "AAAA kaydı var."),
+    "ipv6_fail": ("No AAAA record for $1.", "$1 için AAAA kaydı yok."),
+    "fix_ipv6": ("Network › IPv6 Compatibility: on.", "Network › IPv6 Compatibility: açın."),
+
+    "check_rocketLoader": ("Rocket Loader", "Rocket Loader"),
+    "rocketLoader_pass": ("Not active.", "Etkin değil."),
+    "rocketLoader_fail": ("Rocket Loader is rewriting scripts. It often breaks React/Next.js hydration and can hurt INP.",
+                          "Rocket Loader betikleri yeniden yazıyor. React/Next.js hidrasyonunu sık bozar ve INP'yi kötüleştirebilir."),
+    "fix_rocketLoader": ("Speed › Optimization › Content Optimization › Rocket Loader: off.",
+                         "Speed › Optimization › Content Optimization › Rocket Loader: kapatın."),
+
+    "check_emailObf": ("Email Address Obfuscation", "E-posta adresi gizleme"),
+    "emailObf_pass": ("Not injected on this page.", "Bu sayfaya eklenmemiş."),
+    "emailObf_info": ("email-decode.min.js is injected. Harmless, but it's one more script; turn it off if your HTML has no email addresses.",
+                      "email-decode.min.js ekleniyor. Zararsız ama fazladan bir betik; HTML'de e-posta adresi yoksa kapatın."),
+    "fix_emailObf": ("Scrape Shield › Email Address Obfuscation.", "Scrape Shield › Email Address Obfuscation."),
+
+    "check_rum": ("Web Analytics beacon", "Web Analytics beacon"),
+    "rum_pass": ("No beacon on this page.", "Bu sayfada beacon yok."),
+    "rum_info": ("The Cloudflare Web Analytics beacon is loaded. If you don't use that dashboard, it's an extra request.",
+                 "Cloudflare Web Analytics beacon yükleniyor. O paneli kullanmıyorsanız fazladan bir istek."),
+    "fix_rum": ("Analytics & Logs › Web Analytics: disable the site. Turning off automatic setup alone may not remove it.",
+                "Analytics & Logs › Web Analytics: siteyi devre dışı bırakın. Yalnız otomatik kurulumu kapatmak yetmeyebilir."),
+
+    "check_challenge": ("JavaScript detections", "JavaScript tespitleri"),
+    "challenge_pass": ("No challenge-platform script on this page.", "Bu sayfada challenge-platform betiği yok."),
+    "challenge_info": ("Bot JS detections are injected (/cdn-cgi/challenge-platform). They add main-thread work on every page.",
+                       "Bot JS tespitleri ekleniyor (/cdn-cgi/challenge-platform). Her sayfada ana iş parçacığına yük bindirir."),
+    "fix_challenge": ("Security › Bots: turn off JavaScript Detections if no rule uses the bot score.",
+                      "Security › Bots: bot skorunu kullanan kural yoksa JavaScript Detections'ı kapatın."),
+
+    "check_https": ("HTTPS", "HTTPS"),
+    "https_pass": ("The page is served over HTTPS.", "Sayfa HTTPS ile sunuluyor."),
+    "https_fail": ("The page is served over plain HTTP.", "Sayfa düz HTTP ile sunuluyor."),
+    "fix_https": ("SSL/TLS › Overview: use Full (strict) with a certificate on the origin.",
+                  "SSL/TLS › Overview: origin'de sertifikayla Full (strict) kullanın."),
+
+    "check_httpRedirect": ("HTTP → HTTPS redirect", "HTTP → HTTPS yönlendirme"),
+    "httpRedirect_action": ("Needs a one-time permission to request this site's http:// version.",
+                            "Sitenin http:// sürümünü istemek için tek seferlik izin gerekir."),
+    "httpRedirect_pass": ("http:// requests end up on https://.", "http:// istekleri https://'e yönleniyor."),
+    "httpRedirect_fail": ("The http:// version stays on HTTP ($1).", "http:// sürümü HTTP'de kalıyor ($1)."),
+    "httpRedirect_error": ("Couldn't reach the http:// version: $1", "http:// sürümüne ulaşılamadı: $1"),
+    "fix_httpRedirect": ("SSL/TLS › Edge Certificates › Always Use HTTPS, or redirect on the origin server.",
+                         "SSL/TLS › Edge Certificates › Always Use HTTPS'i açın ya da yönlendirmeyi origin sunucusunda yapın."),
+
+    "check_hsts": ("HSTS", "HSTS"),
+    "hsts_pass": ("max-age $1 days$2", "max-age $1 gün$2"),
+    "hsts_weak": ("max-age is only $1 days; use at least 180.", "max-age yalnızca $1 gün; en az 180 olmalı."),
+    "hsts_fail": ("No Strict-Transport-Security header.", "Strict-Transport-Security başlığı yok."),
+    "fix_hsts": ("SSL/TLS › Edge Certificates › HSTS. Turn it on only after HTTPS works on every subdomain.",
+                 "SSL/TLS › Edge Certificates › HSTS. Ancak tüm alt alan adlarında HTTPS çalışıyorsa açın."),
+
+    "check_csp": ("Content-Security-Policy", "Content-Security-Policy"),
+    "csp_pass": ("An enforced CSP is present.", "Uygulanan bir CSP var."),
+    "csp_reportOnly": ("Only Content-Security-Policy-Report-Only is set; nothing is enforced yet.",
+                       "Yalnızca Content-Security-Policy-Report-Only var; henüz hiçbir şey uygulanmıyor."),
+    "csp_fail": ("No CSP.", "CSP yok."),
+    "fix_csp": ("Send it from your app, or add it with Rules › Transform Rules › Response Header Transform.",
+                "Uygulamanızdan gönderin ya da Rules › Transform Rules › Response Header Transform ile ekleyin."),
+
+    "check_nosniff": ("X-Content-Type-Options", "X-Content-Type-Options"),
+    "nosniff_pass": ("nosniff", "nosniff"),
+    "nosniff_fail": ("nosniff is missing.", "nosniff eksik."),
+    "fix_nosniff": ("Rules › Settings › Managed Transforms › Add security headers, or set it in your app.",
+                    "Rules › Settings › Managed Transforms › Add security headers'ı açın ya da uygulamanızda ayarlayın."),
+
+    "check_frame": ("Clickjacking protection", "Clickjacking koruması"),
+    "frame_fail": ("Neither X-Frame-Options nor CSP frame-ancestors is set.", "Ne X-Frame-Options ne de CSP frame-ancestors var."),
+    "fix_frame": ("Add CSP frame-ancestors 'self' (or X-Frame-Options: SAMEORIGIN) in your app or with a Transform Rule.",
+                  "Uygulamanızda ya da Transform Rule ile CSP frame-ancestors 'self' (veya X-Frame-Options: SAMEORIGIN) ekleyin."),
+
+    "check_referrer": ("Referrer-Policy", "Referrer-Policy"),
+    "referrer_fail": ("Not set; browsers fall back to strict-origin-when-cross-origin.", "Ayarlı değil; tarayıcılar strict-origin-when-cross-origin kullanır."),
+    "fix_referrer": ("Rules › Settings › Managed Transforms › Add security headers, or set it in your app.",
+                     "Rules › Settings › Managed Transforms › Add security headers'ı açın ya da uygulamanızda ayarlayın."),
+
+    "check_permissions": ("Permissions-Policy", "Permissions-Policy"),
+    "permissions_pass": ("Set.", "Ayarlı."),
+    "permissions_fail": ("Not set. Consider disabling camera, microphone and geolocation if you don't use them.",
+                         "Ayarlı değil. Kullanmıyorsanız kamera, mikrofon ve konumu kapatmayı düşünün."),
+    "fix_permissions": ("Add it in your app or with Rules › Transform Rules › Response Header Transform.",
+                        "Uygulamanızda ya da Rules › Transform Rules › Response Header Transform ile ekleyin."),
+
+    "check_leak": ("Server details", "Sunucu bilgisi"),
+    "leak_pass": ("No version info in the headers.", "Başlıklarda sürüm bilgisi yok."),
+    "leak_fail": ("Headers reveal $1.", "Başlıklar şunu açığa çıkarıyor: $1."),
+    "fix_leak": ("Rules › Transform Rules › Response Header Transform: remove X-Powered-By and versioned Server headers.",
+                 "Rules › Transform Rules › Response Header Transform: X-Powered-By ve sürümlü Server başlıklarını kaldırın."),
+
+    "check_dnssec": ("DNSSEC", "DNSSEC"),
+    "dnssec_pass": ("A DS record is published for $1.", "$1 için DS kaydı yayınlanmış."),
+    "dnssec_fail": ("No DS record for $1. DNSSEC is off, or the registrar step is missing.",
+                    "$1 için DS kaydı yok. DNSSEC kapalı ya da kayıt firmasındaki adım eksik."),
+    "fix_dnssec": ("DNS › Settings › DNSSEC: enable it, then add the DS record at your registrar.",
+                   "DNS › Settings › DNSSEC: açın, ardından DS kaydını alan adı kayıt firmanıza ekleyin."),
+
+    "check_caa": ("CAA", "CAA"),
+    "caa_pass": ("CAA allows: $1", "CAA izinli: $1"),
+    "caa_none": ("No CAA records; any certificate authority may issue for this domain.",
+                 "CAA kaydı yok; her sertifika otoritesi bu alan adı için sertifika verebilir."),
+    "caa_bad": ("CAA doesn't allow any CA Cloudflare uses ($1). Edge certificate renewal may fail.",
+                "CAA, Cloudflare'in kullandığı hiçbir CA'ya izin vermiyor ($1). Edge sertifikası yenilenemeyebilir."),
+    "fix_caa": ("DNS › Records: add CAA records that include the CAs Cloudflare uses (letsencrypt.org, pki.goog, ssl.com).",
+                "DNS › Records: Cloudflare'in kullandığı CA'ları (letsencrypt.org, pki.goog, ssl.com) içeren CAA kayıtları ekleyin."),
+
+    "check_spf": ("SPF", "SPF"),
+    "spf_fail": ("No SPF record on $1. Domains that send no mail should still publish v=spf1 -all.",
+                 "$1 üzerinde SPF kaydı yok. Hiç e-posta göndermeyen alan adları da v=spf1 -all yayınlamalı."),
+    "spf_weak": ("SPF ends with $1, which doesn't stop spoofing.", "SPF $1 ile bitiyor; bu sahteciliği engellemez."),
+    "spf_multiple": ("$1 SPF records found; only one is allowed.", "$1 SPF kaydı bulundu; yalnızca bir tane olmalı."),
+    "fix_spf": ("DNS › Records: keep exactly one TXT record starting with v=spf1 on the apex, ending in -all or ~all.",
+                "DNS › Records: kök alanda v=spf1 ile başlayan, -all veya ~all ile biten tek bir TXT kaydı bırakın."),
+
+    "check_dmarc": ("DMARC", "DMARC"),
+    "dmarc_pass": ("Policy p=$1", "Politika p=$1"),
+    "dmarc_none": ("p=none only collects reports; spoofed mail is still delivered.", "p=none yalnızca rapor toplar; sahte e-postalar yine teslim edilir."),
+    "dmarc_fail": ("No DMARC record at _dmarc.$1.", "_dmarc.$1 adresinde DMARC kaydı yok."),
+    "fix_dmarc": ("Email › DMARC Management, or add a TXT record at _dmarc (e.g. v=DMARC1; p=quarantine).",
+                  "Email › DMARC Management'ı kullanın ya da _dmarc adresine TXT kaydı ekleyin (ör. v=DMARC1; p=quarantine)."),
+}
+
+root = Path(__file__).resolve().parent.parent / "extension" / "_locales"
+for i, lang in enumerate(["en", "tr"]):
+    msgs = {k: {"message": v[i]} for k, v in S.items()}
+    lower = [k.lower() for k in S]
+    assert len(lower) == len(set(lower)), "chrome.i18n keys are case-insensitive"
+    (root / lang).mkdir(parents=True, exist_ok=True)
+    (root / lang / "messages.json").write_text(json.dumps(msgs, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+print(f"{len(S)} strings written")

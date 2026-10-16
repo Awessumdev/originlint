@@ -1,0 +1,392 @@
+{
+  "appName": {
+    "message": "EdgeCheck — Cloudflare setup checker"
+  },
+  "appDesc": {
+    "message": "Spot forgotten Cloudflare, HTTPS, security header and DNS settings on any site, from the outside."
+  },
+  "scanning": {
+    "message": "Scanning…"
+  },
+  "notWeb": {
+    "message": "Open a website (http or https) and click the icon again."
+  },
+  "scanFailed": {
+    "message": "Couldn't read this page: $1"
+  },
+  "rescan": {
+    "message": "Rescan"
+  },
+  "copyReport": {
+    "message": "Copy report"
+  },
+  "copied": {
+    "message": "Copied"
+  },
+  "mute": {
+    "message": "Ignore"
+  },
+  "unmute": {
+    "message": "Restore"
+  },
+  "ignored": {
+    "message": "Ignored ($1)"
+  },
+  "howToFix": {
+    "message": "How to fix"
+  },
+  "check": {
+    "message": "Check"
+  },
+  "none": {
+    "message": "none"
+  },
+  "onCf": {
+    "message": "On Cloudflare"
+  },
+  "notCf": {
+    "message": "Not proxied"
+  },
+  "zoneLabel": {
+    "message": "Zone: $1"
+  },
+  "sumFail": {
+    "message": "errors"
+  },
+  "sumWarn": {
+    "message": "warnings"
+  },
+  "sumInfo": {
+    "message": "notes"
+  },
+  "sumPass": {
+    "message": "passed"
+  },
+  "limits": {
+    "message": "SSL mode, minimum TLS version and WAF rules aren't visible from outside. This scan only reports what the site exposes publicly."
+  },
+  "skippedNotCf": {
+    "message": "Skipped: the site isn't behind the Cloudflare proxy."
+  },
+  "dnsFailed": {
+    "message": "DNS lookup failed: $1"
+  },
+  "st_pass": {
+    "message": "OK"
+  },
+  "st_warn": {
+    "message": "Warning"
+  },
+  "st_fail": {
+    "message": "Error"
+  },
+  "st_info": {
+    "message": "Note"
+  },
+  "st_skip": {
+    "message": "Skipped"
+  },
+  "st_action": {
+    "message": "Needs check"
+  },
+  "grp_cloudflare": {
+    "message": "Cloudflare"
+  },
+  "grp_https": {
+    "message": "HTTPS"
+  },
+  "grp_headers": {
+    "message": "Security headers"
+  },
+  "grp_dns": {
+    "message": "DNS & email"
+  },
+  "check_proxied": {
+    "message": "Cloudflare proxy"
+  },
+  "proxied_pass": {
+    "message": "Traffic goes through Cloudflare (cf-ray $1)."
+  },
+  "proxied_fail": {
+    "message": "No Cloudflare headers. The record may be DNS-only (grey cloud) or the site isn't on Cloudflare."
+  },
+  "fix_proxied": {
+    "message": "DNS › Records: set the record's proxy status to Proxied (orange cloud)."
+  },
+  "check_http3": {
+    "message": "HTTP/3 (QUIC)"
+  },
+  "http3_pass": {
+    "message": "This page loaded over HTTP/3."
+  },
+  "http3_advertised": {
+    "message": "HTTP/3 is advertised (alt-svc); this load used $1."
+  },
+  "http3_fail": {
+    "message": "HTTP/3 isn't advertised."
+  },
+  "fix_http3": {
+    "message": "Speed › Optimization › Protocol Optimization › HTTP/3 (with QUIC): on."
+  },
+  "check_compression": {
+    "message": "Compression"
+  },
+  "compression_pass": {
+    "message": "HTML is compressed with $1."
+  },
+  "compression_gzip": {
+    "message": "HTML uses gzip; Brotli or Zstandard is smaller."
+  },
+  "compression_fail": {
+    "message": "HTML isn't compressed."
+  },
+  "fix_compression": {
+    "message": "Rules › Compression Rules, and make sure the origin doesn't send Cache-Control: no-transform."
+  },
+  "check_cache": {
+    "message": "Edge cache for static files"
+  },
+  "cache_pass": {
+    "message": "$1 → cf-cache-status: $2"
+  },
+  "cache_fail": {
+    "message": "$1 → cf-cache-status: $2. Static files aren't being cached."
+  },
+  "cache_none": {
+    "message": "No same-origin static file found to test."
+  },
+  "fix_cache": {
+    "message": "Caching › Cache Rules: cache static paths, and check the origin doesn't send Cache-Control: private or no-store."
+  },
+  "check_ipv6": {
+    "message": "IPv6"
+  },
+  "ipv6_pass": {
+    "message": "AAAA record found."
+  },
+  "ipv6_fail": {
+    "message": "No AAAA record for $1."
+  },
+  "fix_ipv6": {
+    "message": "Network › IPv6 Compatibility: on."
+  },
+  "check_rocketLoader": {
+    "message": "Rocket Loader"
+  },
+  "rocketLoader_pass": {
+    "message": "Not active."
+  },
+  "rocketLoader_fail": {
+    "message": "Rocket Loader is rewriting scripts. It often breaks React/Next.js hydration and can hurt INP."
+  },
+  "fix_rocketLoader": {
+    "message": "Speed › Optimization › Content Optimization › Rocket Loader: off."
+  },
+  "check_emailObf": {
+    "message": "Email Address Obfuscation"
+  },
+  "emailObf_pass": {
+    "message": "Not injected on this page."
+  },
+  "emailObf_info": {
+    "message": "email-decode.min.js is injected. Harmless, but it's one more script; turn it off if your HTML has no email addresses."
+  },
+  "fix_emailObf": {
+    "message": "Scrape Shield › Email Address Obfuscation."
+  },
+  "check_rum": {
+    "message": "Web Analytics beacon"
+  },
+  "rum_pass": {
+    "message": "No beacon on this page."
+  },
+  "rum_info": {
+    "message": "The Cloudflare Web Analytics beacon is loaded. If you don't use that dashboard, it's an extra request."
+  },
+  "fix_rum": {
+    "message": "Analytics & Logs › Web Analytics: disable the site. Turning off automatic setup alone may not remove it."
+  },
+  "check_challenge": {
+    "message": "JavaScript detections"
+  },
+  "challenge_pass": {
+    "message": "No challenge-platform script on this page."
+  },
+  "challenge_info": {
+    "message": "Bot JS detections are injected (/cdn-cgi/challenge-platform). They add main-thread work on every page."
+  },
+  "fix_challenge": {
+    "message": "Security › Bots: turn off JavaScript Detections if no rule uses the bot score."
+  },
+  "check_https": {
+    "message": "HTTPS"
+  },
+  "https_pass": {
+    "message": "The page is served over HTTPS."
+  },
+  "https_fail": {
+    "message": "The page is served over plain HTTP."
+  },
+  "fix_https": {
+    "message": "SSL/TLS › Overview: use Full (strict) with a certificate on the origin."
+  },
+  "check_httpRedirect": {
+    "message": "HTTP → HTTPS redirect"
+  },
+  "httpRedirect_action": {
+    "message": "Needs a one-time permission to request this site's http:// version."
+  },
+  "httpRedirect_pass": {
+    "message": "http:// requests end up on https://."
+  },
+  "httpRedirect_fail": {
+    "message": "The http:// version stays on HTTP ($1)."
+  },
+  "httpRedirect_error": {
+    "message": "Couldn't reach the http:// version: $1"
+  },
+  "fix_httpRedirect": {
+    "message": "SSL/TLS › Edge Certificates › Always Use HTTPS, or redirect on the origin server."
+  },
+  "check_hsts": {
+    "message": "HSTS"
+  },
+  "hsts_pass": {
+    "message": "max-age $1 days$2"
+  },
+  "hsts_weak": {
+    "message": "max-age is only $1 days; use at least 180."
+  },
+  "hsts_fail": {
+    "message": "No Strict-Transport-Security header."
+  },
+  "fix_hsts": {
+    "message": "SSL/TLS › Edge Certificates › HSTS. Turn it on only after HTTPS works on every subdomain."
+  },
+  "check_csp": {
+    "message": "Content-Security-Policy"
+  },
+  "csp_pass": {
+    "message": "An enforced CSP is present."
+  },
+  "csp_reportOnly": {
+    "message": "Only Content-Security-Policy-Report-Only is set; nothing is enforced yet."
+  },
+  "csp_fail": {
+    "message": "No CSP."
+  },
+  "fix_csp": {
+    "message": "Send it from your app, or add it with Rules › Transform Rules › Response Header Transform."
+  },
+  "check_nosniff": {
+    "message": "X-Content-Type-Options"
+  },
+  "nosniff_pass": {
+    "message": "nosniff"
+  },
+  "nosniff_fail": {
+    "message": "nosniff is missing."
+  },
+  "fix_nosniff": {
+    "message": "Rules › Settings › Managed Transforms › Add security headers, or set it in your app."
+  },
+  "check_frame": {
+    "message": "Clickjacking protection"
+  },
+  "frame_fail": {
+    "message": "Neither X-Frame-Options nor CSP frame-ancestors is set."
+  },
+  "fix_frame": {
+    "message": "Add CSP frame-ancestors 'self' (or X-Frame-Options: SAMEORIGIN) in your app or with a Transform Rule."
+  },
+  "check_referrer": {
+    "message": "Referrer-Policy"
+  },
+  "referrer_fail": {
+    "message": "Not set; browsers fall back to strict-origin-when-cross-origin."
+  },
+  "fix_referrer": {
+    "message": "Rules › Settings › Managed Transforms › Add security headers, or set it in your app."
+  },
+  "check_permissions": {
+    "message": "Permissions-Policy"
+  },
+  "permissions_pass": {
+    "message": "Set."
+  },
+  "permissions_fail": {
+    "message": "Not set. Consider disabling camera, microphone and geolocation if you don't use them."
+  },
+  "fix_permissions": {
+    "message": "Add it in your app or with Rules › Transform Rules › Response Header Transform."
+  },
+  "check_leak": {
+    "message": "Server details"
+  },
+  "leak_pass": {
+    "message": "No version info in the headers."
+  },
+  "leak_fail": {
+    "message": "Headers reveal $1."
+  },
+  "fix_leak": {
+    "message": "Rules › Transform Rules › Response Header Transform: remove X-Powered-By and versioned Server headers."
+  },
+  "check_dnssec": {
+    "message": "DNSSEC"
+  },
+  "dnssec_pass": {
+    "message": "A DS record is published for $1."
+  },
+  "dnssec_fail": {
+    "message": "No DS record for $1. DNSSEC is off, or the registrar step is missing."
+  },
+  "fix_dnssec": {
+    "message": "DNS › Settings › DNSSEC: enable it, then add the DS record at your registrar."
+  },
+  "check_caa": {
+    "message": "CAA"
+  },
+  "caa_pass": {
+    "message": "CAA allows: $1"
+  },
+  "caa_none": {
+    "message": "No CAA records; any certificate authority may issue for this domain."
+  },
+  "caa_bad": {
+    "message": "CAA doesn't allow any CA Cloudflare uses ($1). Edge certificate renewal may fail."
+  },
+  "fix_caa": {
+    "message": "DNS › Records: add CAA records that include the CAs Cloudflare uses (letsencrypt.org, pki.goog, ssl.com)."
+  },
+  "check_spf": {
+    "message": "SPF"
+  },
+  "spf_fail": {
+    "message": "No SPF record on $1. Domains that send no mail should still publish v=spf1 -all."
+  },
+  "spf_weak": {
+    "message": "SPF ends with $1, which doesn't stop spoofing."
+  },
+  "spf_multiple": {
+    "message": "$1 SPF records found; only one is allowed."
+  },
+  "fix_spf": {
+    "message": "DNS › Records: keep exactly one TXT record starting with v=spf1 on the apex, ending in -all or ~all."
+  },
+  "check_dmarc": {
+    "message": "DMARC"
+  },
+  "dmarc_pass": {
+    "message": "Policy p=$1"
+  },
+  "dmarc_none": {
+    "message": "p=none only collects reports; spoofed mail is still delivered."
+  },
+  "dmarc_fail": {
+    "message": "No DMARC record at _dmarc.$1."
+  },
+  "fix_dmarc": {
+    "message": "Email › DMARC Management, or add a TXT record at _dmarc (e.g. v=DMARC1; p=quarantine)."
+  }
+}

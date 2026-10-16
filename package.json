@@ -1,0 +1,15 @@
+{
+  "name": "edgecheck",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "locales": "python3 tools/gen_locales.py",
+    "icons": "node tools/icons.js",
+    "test": "node --test test/",
+    "e2e": "node test/e2e.js",
+    "zip": "cd extension && rm -f ../edgecheck.zip && zip -qr ../edgecheck.zip . -x '.*'"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.43.1"
+  }
+}

@@ -1,0 +1,392 @@
+{
+  "appName": {
+    "message": "EdgeCheck — Cloudflare ayar denetçisi"
+  },
+  "appDesc": {
+    "message": "Herhangi bir sitede unutulmuş Cloudflare, HTTPS, güvenlik başlığı ve DNS ayarlarını dışarıdan tespit eder."
+  },
+  "scanning": {
+    "message": "Taranıyor…"
+  },
+  "notWeb": {
+    "message": "Bir web sitesi (http veya https) açıp simgeye tekrar tıklayın."
+  },
+  "scanFailed": {
+    "message": "Bu sayfa okunamadı: $1"
+  },
+  "rescan": {
+    "message": "Yeniden tara"
+  },
+  "copyReport": {
+    "message": "Raporu kopyala"
+  },
+  "copied": {
+    "message": "Kopyalandı"
+  },
+  "mute": {
+    "message": "Yoksay"
+  },
+  "unmute": {
+    "message": "Geri al"
+  },
+  "ignored": {
+    "message": "Yoksayılanlar ($1)"
+  },
+  "howToFix": {
+    "message": "Nasıl düzeltilir"
+  },
+  "check": {
+    "message": "Kontrol et"
+  },
+  "none": {
+    "message": "yok"
+  },
+  "onCf": {
+    "message": "Cloudflare'de"
+  },
+  "notCf": {
+    "message": "Proxy yok"
+  },
+  "zoneLabel": {
+    "message": "Alan: $1"
+  },
+  "sumFail": {
+    "message": "hata"
+  },
+  "sumWarn": {
+    "message": "uyarı"
+  },
+  "sumInfo": {
+    "message": "not"
+  },
+  "sumPass": {
+    "message": "geçti"
+  },
+  "limits": {
+    "message": "SSL modu, minimum TLS sürümü ve WAF kuralları dışarıdan görünmez. Bu tarama yalnızca sitenin herkese açık gösterdiklerini raporlar."
+  },
+  "skippedNotCf": {
+    "message": "Atlandı: site Cloudflare proxy'si arkasında değil."
+  },
+  "dnsFailed": {
+    "message": "DNS sorgusu başarısız: $1"
+  },
+  "st_pass": {
+    "message": "Tamam"
+  },
+  "st_warn": {
+    "message": "Uyarı"
+  },
+  "st_fail": {
+    "message": "Hata"
+  },
+  "st_info": {
+    "message": "Not"
+  },
+  "st_skip": {
+    "message": "Atlandı"
+  },
+  "st_action": {
+    "message": "Kontrol gerekli"
+  },
+  "grp_cloudflare": {
+    "message": "Cloudflare"
+  },
+  "grp_https": {
+    "message": "HTTPS"
+  },
+  "grp_headers": {
+    "message": "Güvenlik başlıkları"
+  },
+  "grp_dns": {
+    "message": "DNS ve e-posta"
+  },
+  "check_proxied": {
+    "message": "Cloudflare proxy"
+  },
+  "proxied_pass": {
+    "message": "Trafik Cloudflare üzerinden geçiyor (cf-ray $1)."
+  },
+  "proxied_fail": {
+    "message": "Cloudflare başlığı yok. Kayıt DNS-only (gri bulut) olabilir ya da site Cloudflare'de değil."
+  },
+  "fix_proxied": {
+    "message": "DNS › Records: kaydın proxy durumunu Proxied (turuncu bulut) yapın."
+  },
+  "check_http3": {
+    "message": "HTTP/3 (QUIC)"
+  },
+  "http3_pass": {
+    "message": "Bu sayfa HTTP/3 ile yüklendi."
+  },
+  "http3_advertised": {
+    "message": "HTTP/3 duyuruluyor (alt-svc); bu yükleme $1 kullandı."
+  },
+  "http3_fail": {
+    "message": "HTTP/3 duyurulmuyor."
+  },
+  "fix_http3": {
+    "message": "Speed › Optimization › Protocol Optimization › HTTP/3 (with QUIC): açın."
+  },
+  "check_compression": {
+    "message": "Sıkıştırma"
+  },
+  "compression_pass": {
+    "message": "HTML $1 ile sıkıştırılıyor."
+  },
+  "compression_gzip": {
+    "message": "HTML gzip kullanıyor; Brotli veya Zstandard daha küçük."
+  },
+  "compression_fail": {
+    "message": "HTML sıkıştırılmıyor."
+  },
+  "fix_compression": {
+    "message": "Rules › Compression Rules; origin'in Cache-Control: no-transform göndermediğinden emin olun."
+  },
+  "check_cache": {
+    "message": "Statik dosyalar için edge önbelleği"
+  },
+  "cache_pass": {
+    "message": "$1 → cf-cache-status: $2"
+  },
+  "cache_fail": {
+    "message": "$1 → cf-cache-status: $2. Statik dosyalar önbelleğe alınmıyor."
+  },
+  "cache_none": {
+    "message": "Test edilecek aynı kaynaklı statik dosya bulunamadı."
+  },
+  "fix_cache": {
+    "message": "Caching › Cache Rules: statik yolları önbelleğe alın; origin'in Cache-Control: private veya no-store göndermediğini kontrol edin."
+  },
+  "check_ipv6": {
+    "message": "IPv6"
+  },
+  "ipv6_pass": {
+    "message": "AAAA kaydı var."
+  },
+  "ipv6_fail": {
+    "message": "$1 için AAAA kaydı yok."
+  },
+  "fix_ipv6": {
+    "message": "Network › IPv6 Compatibility: açın."
+  },
+  "check_rocketLoader": {
+    "message": "Rocket Loader"
+  },
+  "rocketLoader_pass": {
+    "message": "Etkin değil."
+  },
+  "rocketLoader_fail": {
+    "message": "Rocket Loader betikleri yeniden yazıyor. React/Next.js hidrasyonunu sık bozar ve INP'yi kötüleştirebilir."
+  },
+  "fix_rocketLoader": {
+    "message": "Speed › Optimization › Content Optimization › Rocket Loader: kapatın."
+  },
+  "check_emailObf": {
+    "message": "E-posta adresi gizleme"
+  },
+  "emailObf_pass": {
+    "message": "Bu sayfaya eklenmemiş."
+  },
+  "emailObf_info": {
+    "message": "email-decode.min.js ekleniyor. Zararsız ama fazladan bir betik; HTML'de e-posta adresi yoksa kapatın."
+  },
+  "fix_emailObf": {
+    "message": "Scrape Shield › Email Address Obfuscation."
+  },
+  "check_rum": {
+    "message": "Web Analytics beacon"
+  },
+  "rum_pass": {
+    "message": "Bu sayfada beacon yok."
+  },
+  "rum_info": {
+    "message": "Cloudflare Web Analytics beacon yükleniyor. O paneli kullanmıyorsanız fazladan bir istek."
+  },
+  "fix_rum": {
+    "message": "Analytics & Logs › Web Analytics: siteyi devre dışı bırakın. Yalnız otomatik kurulumu kapatmak yetmeyebilir."
+  },
+  "check_challenge": {
+    "message": "JavaScript tespitleri"
+  },
+  "challenge_pass": {
+    "message": "Bu sayfada challenge-platform betiği yok."
+  },
+  "challenge_info": {
+    "message": "Bot JS tespitleri ekleniyor (/cdn-cgi/challenge-platform). Her sayfada ana iş parçacığına yük bindirir."
+  },
+  "fix_challenge": {
+    "message": "Security › Bots: bot skorunu kullanan kural yoksa JavaScript Detections'ı kapatın."
+  },
+  "check_https": {
+    "message": "HTTPS"
+  },
+  "https_pass": {
+    "message": "Sayfa HTTPS ile sunuluyor."
+  },
+  "https_fail": {
+    "message": "Sayfa düz HTTP ile sunuluyor."
+  },
+  "fix_https": {
+    "message": "SSL/TLS › Overview: origin'de sertifikayla Full (strict) kullanın."
+  },
+  "check_httpRedirect": {
+    "message": "HTTP → HTTPS yönlendirme"
+  },
+  "httpRedirect_action": {
+    "message": "Sitenin http:// sürümünü istemek için tek seferlik izin gerekir."
+  },
+  "httpRedirect_pass": {
+    "message": "http:// istekleri https://'e yönleniyor."
+  },
+  "httpRedirect_fail": {
+    "message": "http:// sürümü HTTP'de kalıyor ($1)."
+  },
+  "httpRedirect_error": {
+    "message": "http:// sürümüne ulaşılamadı: $1"
+  },
+  "fix_httpRedirect": {
+    "message": "SSL/TLS › Edge Certificates › Always Use HTTPS'i açın ya da yönlendirmeyi origin sunucusunda yapın."
+  },
+  "check_hsts": {
+    "message": "HSTS"
+  },
+  "hsts_pass": {
+    "message": "max-age $1 gün$2"
+  },
+  "hsts_weak": {
+    "message": "max-age yalnızca $1 gün; en az 180 olmalı."
+  },
+  "hsts_fail": {
+    "message": "Strict-Transport-Security başlığı yok."
+  },
+  "fix_hsts": {
+    "message": "SSL/TLS › Edge Certificates › HSTS. Ancak tüm alt alan adlarında HTTPS çalışıyorsa açın."
+  },
+  "check_csp": {
+    "message": "Content-Security-Policy"
+  },
+  "csp_pass": {
+    "message": "Uygulanan bir CSP var."
+  },
+  "csp_reportOnly": {
+    "message": "Yalnızca Content-Security-Policy-Report-Only var; henüz hiçbir şey uygulanmıyor."
+  },
+  "csp_fail": {
+    "message": "CSP yok."
+  },
+  "fix_csp": {
+    "message": "Uygulamanızdan gönderin ya da Rules › Transform Rules › Response Header Transform ile ekleyin."
+  },
+  "check_nosniff": {
+    "message": "X-Content-Type-Options"
+  },
+  "nosniff_pass": {
+    "message": "nosniff"
+  },
+  "nosniff_fail": {
+    "message": "nosniff eksik."
+  },
+  "fix_nosniff": {
+    "message": "Rules › Settings › Managed Transforms › Add security headers'ı açın ya da uygulamanızda ayarlayın."
+  },
+  "check_frame": {
+    "message": "Clickjacking koruması"
+  },
+  "frame_fail": {
+    "message": "Ne X-Frame-Options ne de CSP frame-ancestors var."
+  },
+  "fix_frame": {
+    "message": "Uygulamanızda ya da Transform Rule ile CSP frame-ancestors 'self' (veya X-Frame-Options: SAMEORIGIN) ekleyin."
+  },
+  "check_referrer": {
+    "message": "Referrer-Policy"
+  },
+  "referrer_fail": {
+    "message": "Ayarlı değil; tarayıcılar strict-origin-when-cross-origin kullanır."
+  },
+  "fix_referrer": {
+    "message": "Rules › Settings › Managed Transforms › Add security headers'ı açın ya da uygulamanızda ayarlayın."
+  },
+  "check_permissions": {
+    "message": "Permissions-Policy"
+  },
+  "permissions_pass": {
+    "message": "Ayarlı."
+  },
+  "permissions_fail": {
+    "message": "Ayarlı değil. Kullanmıyorsanız kamera, mikrofon ve konumu kapatmayı düşünün."
+  },
+  "fix_permissions": {
+    "message": "Uygulamanızda ya da Rules › Transform Rules › Response Header Transform ile ekleyin."
+  },
+  "check_leak": {
+    "message": "Sunucu bilgisi"
+  },
+  "leak_pass": {
+    "message": "Başlıklarda sürüm bilgisi yok."
+  },
+  "leak_fail": {
+    "message": "Başlıklar şunu açığa çıkarıyor: $1."
+  },
+  "fix_leak": {
+    "message": "Rules › Transform Rules › Response Header Transform: X-Powered-By ve sürümlü Server başlıklarını kaldırın."
+  },
+  "check_dnssec": {
+    "message": "DNSSEC"
+  },
+  "dnssec_pass": {
+    "message": "$1 için DS kaydı yayınlanmış."
+  },
+  "dnssec_fail": {
+    "message": "$1 için DS kaydı yok. DNSSEC kapalı ya da kayıt firmasındaki adım eksik."
+  },
+  "fix_dnssec": {
+    "message": "DNS › Settings › DNSSEC: açın, ardından DS kaydını alan adı kayıt firmanıza ekleyin."
+  },
+  "check_caa": {
+    "message": "CAA"
+  },
+  "caa_pass": {
+    "message": "CAA izinli: $1"
+  },
+  "caa_none": {
+    "message": "CAA kaydı yok; her sertifika otoritesi bu alan adı için sertifika verebilir."
+  },
+  "caa_bad": {
+    "message": "CAA, Cloudflare'in kullandığı hiçbir CA'ya izin vermiyor ($1). Edge sertifikası yenilenemeyebilir."
+  },
+  "fix_caa": {
+    "message": "DNS › Records: Cloudflare'in kullandığı CA'ları (letsencrypt.org, pki.goog, ssl.com) içeren CAA kayıtları ekleyin."
+  },
+  "check_spf": {
+    "message": "SPF"
+  },
+  "spf_fail": {
+    "message": "$1 üzerinde SPF kaydı yok. Hiç e-posta göndermeyen alan adları da v=spf1 -all yayınlamalı."
+  },
+  "spf_weak": {
+    "message": "SPF $1 ile bitiyor; bu sahteciliği engellemez."
+  },
+  "spf_multiple": {
+    "message": "$1 SPF kaydı bulundu; yalnızca bir tane olmalı."
+  },
+  "fix_spf": {
+    "message": "DNS › Records: kök alanda v=spf1 ile başlayan, -all veya ~all ile biten tek bir TXT kaydı bırakın."
+  },
+  "check_dmarc": {
+    "message": "DMARC"
+  },
+  "dmarc_pass": {
+    "message": "Politika p=$1"
+  },
+  "dmarc_none": {
+    "message": "p=none yalnızca rapor toplar; sahte e-postalar yine teslim edilir."
+  },
+  "dmarc_fail": {
+    "message": "_dmarc.$1 adresinde DMARC kaydı yok."
+  },
+  "fix_dmarc": {
+    "message": "Email › DMARC Management'ı kullanın ya da _dmarc adresine TXT kaydı ekleyin (ör. v=DMARC1; p=quarantine)."
+  }
+}
