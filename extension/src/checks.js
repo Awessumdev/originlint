@@ -4,7 +4,7 @@ const HALF_YEAR = 15552000;
 const CF_CAS = ['letsencrypt.org', 'pki.goog', 'ssl.com', 'sectigo.com', 'comodoca.com', 'digicert.com'];
 const CACHED = ['HIT', 'MISS', 'EXPIRED', 'REVALIDATED', 'UPDATING', 'STALE'];
 
-export const GROUPS = ['cloudflare', 'https', 'headers', 'dns'];
+export const GROUPS = ['cloudflare', 'account', 'https', 'headers', 'dns'];
 
 export function evaluate({ page, dns, dnsError, redirect, variant, variantHost }, t) {
   const h = page.page && page.page.headers ? page.page.headers : {};

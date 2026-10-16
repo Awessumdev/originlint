@@ -144,3 +144,10 @@ main { padding: 4px 14px 8px; }
 }
 .deep-note { color: var(--muted); font-size: 12px; flex: 1 1 180px; }
 .deep-on { color: var(--pass); font-size: 12px; font-weight: 600; }
+
+.api-link { margin-top: 6px; }
+.api-link:empty { display: none; }
+button.linklike {
+  border: 0; background: none; padding: 2px 0; color: var(--accent);
+  font-size: 12px; text-decoration: underline; text-underline-offset: 2px;
+}

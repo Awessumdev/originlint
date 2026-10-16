@@ -1,4 +1,262 @@
 {
+  "grp_account": {
+    "message": "Cloudflare hesabı (API)"
+  },
+  "apiAdd": {
+    "message": "Cloudflare API token ile hesap ayarlarını da kontrol et →"
+  },
+  "apiNoPermission": {
+    "message": "api.cloudflare.com erişimi kaldırılmış. Token'ı ayarlar sayfasında yeniden kaydedin."
+  },
+  "apiLoading": {
+    "message": "Hesap ayarları Cloudflare API'sinden okunuyor…"
+  },
+  "apiTimeout": {
+    "message": "Cloudflare API'si zamanında yanıt vermedi"
+  },
+  "api_on": {
+    "message": "Açık"
+  },
+  "api_off": {
+    "message": "Kapalı"
+  },
+  "api_unknown": {
+    "message": "Beklenmeyen değer: $1"
+  },
+  "api_error": {
+    "message": "API isteği başarısız: $1"
+  },
+  "api_noPerm": {
+    "message": "Token bunu okuyamıyor. \"$1\" yetkisini ekleyin."
+  },
+  "check_apiAccess": {
+    "message": "API erişimi"
+  },
+  "api_noZone": {
+    "message": "$1, bu token'ın okuyabildiği hesapta değil."
+  },
+  "fix_apiAccess": {
+    "message": "My Profile › API Tokens altında token'ın Zone Resources ayarına bakın ya da bu alan adının sahibi olan hesabın token'ını kullanın."
+  },
+  "check_api_ssl": {
+    "message": "SSL/TLS şifreleme modu"
+  },
+  "api_ssl_auto": {
+    "message": " · Cloudflare otomatik ayarlıyor"
+  },
+  "api_ssl_full": {
+    "message": "Full: origin sertifikası doğrulanmıyor; sahte bir sertifika da kabul edilir."
+  },
+  "api_ssl_flexible": {
+    "message": "Flexible: Cloudflare sunucunuzla düz HTTP üzerinden konuşuyor."
+  },
+  "api_ssl_off": {
+    "message": "Off: Cloudflare ziyaretçilere HTTPS sunmuyor."
+  },
+  "fix_api_ssl": {
+    "message": "SSL/TLS › Overview: Full (strict); sunucuda geçerli ya da Cloudflare Origin CA sertifikası olsun."
+  },
+  "check_api_minTls": {
+    "message": "Minimum TLS sürümü"
+  },
+  "api_minTls_weak": {
+    "message": "TLS $1 hâlâ kabul ediliyor. TLS 1.0 ve 1.1 artık kullanılmıyor."
+  },
+  "fix_api_minTls": {
+    "message": "SSL/TLS › Edge Certificates › Minimum TLS Version: TLS 1.2."
+  },
+  "check_api_tls13": {
+    "message": "TLS 1.3"
+  },
+  "fix_api_tls13": {
+    "message": "SSL/TLS › Edge Certificates › TLS 1.3: açın."
+  },
+  "check_api_alwaysHttps": {
+    "message": "Always Use HTTPS"
+  },
+  "api_alwaysHttps_origin": {
+    "message": "Kapalı, ama origin http:// isteklerini zaten https://'e yönlendiriyor."
+  },
+  "api_alwaysHttps_off": {
+    "message": "Kapalı ve HTTP → HTTPS yönlendirmesi doğrulanmadı. Origin'in yönlendirip yönlendirmediğini görmek için derin kontrolleri çalıştırın."
+  },
+  "fix_api_alwaysHttps": {
+    "message": "SSL/TLS › Edge Certificates › Always Use HTTPS'i açın ya da yönlendirmeyi origin sunucusunda yapın."
+  },
+  "check_api_httpsRewrites": {
+    "message": "Automatic HTTPS Rewrites"
+  },
+  "api_httpsRewrites_off": {
+    "message": "Kapalı. Sayfalarınızda http:// bağlantı yoksa sorun değil."
+  },
+  "fix_api_httpsRewrites": {
+    "message": "SSL/TLS › Edge Certificates › Automatic HTTPS Rewrites."
+  },
+  "check_api_devMode": {
+    "message": "Development Mode"
+  },
+  "api_devMode_on": {
+    "message": "Açık: önbellek yaklaşık $1 dakika daha atlanıyor."
+  },
+  "fix_api_devMode": {
+    "message": "Caching › Configuration › Development Mode: kapatın. 3 saat sonra kendiliğinden kapanır."
+  },
+  "check_api_securityLevel": {
+    "message": "Güvenlik seviyesi"
+  },
+  "api_underAttack": {
+    "message": "I'm Under Attack modu açık: her ziyaretçi bir doğrulama sayfası görüyor."
+  },
+  "api_securityLevel_low": {
+    "message": "Güvenlik seviyesi \"$1\"."
+  },
+  "fix_api_securityLevel": {
+    "message": "Security › Settings: saldırı bittiyse I'm Under Attack modunu kapatın."
+  },
+  "check_api_browserCheck": {
+    "message": "Browser Integrity Check"
+  },
+  "api_browserCheck_off": {
+    "message": "Kapalı: şüpheli başlıklı istekler engellenmiyor."
+  },
+  "fix_api_browserCheck": {
+    "message": "Security › Settings › Browser Integrity Check."
+  },
+  "check_api_rocketLoader": {
+    "message": "Rocket Loader (alan adı)"
+  },
+  "fix_api_rocketLoader": {
+    "message": "Speed › Settings › Content Optimization › Rocket Loader: kapatın."
+  },
+  "check_api_emailObf": {
+    "message": "E-posta adresi gizleme (alan adı)"
+  },
+  "api_emailObf_on": {
+    "message": "Tüm alan adında açık. E-posta adresi geçen sayfalara bir betik ekler."
+  },
+  "fix_api_emailObf": {
+    "message": "Security › Settings › Email Address Obfuscation."
+  },
+  "check_api_dnssec": {
+    "message": "DNSSEC (hesap)"
+  },
+  "api_dnssec_active": {
+    "message": "Etkin."
+  },
+  "api_dnssec_pending": {
+    "message": "Cloudflare'de açık ama DS kaydı henüz kayıt firmasında değil."
+  },
+  "api_dnssec_pendingDisabled": {
+    "message": "Kapatılıyor (pending-disabled). DS kaydının kayıt firmanızdan silindiğinden emin olun."
+  },
+  "api_dnssec_error": {
+    "message": "Cloudflare bir DNSSEC hatası bildiriyor. Kayıt firmanızdaki DS kaydının paneldekiyle aynı olduğunu kontrol edin."
+  },
+  "api_dnssec_disabled": {
+    "message": "Kapalı."
+  },
+  "fix_api_dnssec": {
+    "message": "DNS › Settings › DNSSEC: açın, ardından gösterilen DS kaydını kayıt firmanıza ekleyin."
+  },
+  "check_api_grey": {
+    "message": "DNS-only (gri bulut) kayıtlar"
+  },
+  "api_grey_partial": {
+    "message": "Bu alan adında OriginLint'in okuduğundan fazla DNS kaydı var; her türün ilk 300 kaydında DNS-only yok."
+  },
+  "api_grey_none": {
+    "message": "Proxy'lenebilen tüm kayıtlar proxy'de."
+  },
+  "api_grey_some": {
+    "message": "$1 proxy'lenebilir kayıt DNS-only: $2. Mail ya da SSH sunucuları için normal; değilse IP adresleri açıkta."
+  },
+  "fix_api_grey": {
+    "message": "DNS › Records: web sunucularını Proxied (turuncu bulut) yapın."
+  },
+  "check_api_certs": {
+    "message": "Edge sertifikaları"
+  },
+  "api_certs_ok": {
+    "message": "Etkin; ilki $1 gün sonra doluyor."
+  },
+  "api_certs_ok_nodate": {
+    "message": "Etkin."
+  },
+  "api_certs_bad": {
+    "message": "Etkin değil: $1"
+  },
+  "api_certs_expiring": {
+    "message": "Bir sertifika $1 gün içinde doluyor ve yenilenmemiş."
+  },
+  "api_certs_none": {
+    "message": "Bu alan adı için edge sertifikası bulunamadı."
+  },
+  "fix_api_certs": {
+    "message": "SSL/TLS › Edge Certificates: sertifika durumunu ve CAA kayıtlarını kontrol edin."
+  },
+  "opt_title": {
+    "message": "Cloudflare API modu"
+  },
+  "opt_lead": {
+    "message": "Dışarıdan görünmeyen kontrolleri ekler: SSL modu, minimum TLS, Development Mode, DNSSEC durumu ve fazlası. Yalnızca okur."
+  },
+  "opt_step1": {
+    "message": "1. Salt okunur bir token oluşturun"
+  },
+  "opt_step1_open": {
+    "message": "Açın:"
+  },
+  "opt_step1_custom": {
+    "message": "Create Token, ardından Create Custom Token'a tıklayın."
+  },
+  "opt_step1_perms": {
+    "message": "Şu dört yetkiyi ekleyin:"
+  },
+  "opt_step1_zones": {
+    "message": "Zone Resources: All zones ya da yalnızca kontrol etmek istediğiniz alan adları. Hiçbir Edit yetkisi eklemeyin."
+  },
+  "opt_step2": {
+    "message": "2. Token'ı yapıştırın"
+  },
+  "opt_tokenLabel": {
+    "message": "API token"
+  },
+  "opt_save": {
+    "message": "Kaydet ve doğrula"
+  },
+  "opt_remove": {
+    "message": "Token'ı sil"
+  },
+  "opt_tokenEmpty": {
+    "message": "Önce bir token yapıştırın."
+  },
+  "opt_tokenFormat": {
+    "message": "Bu bir API token'a benzemiyor. Global API Key ya da token ID değil, token'ın kendisini yapıştırın."
+  },
+  "opt_permDenied": {
+    "message": "Token'ı kullanmak için OriginLint'in api.cloudflare.com erişimine ihtiyacı var."
+  },
+  "opt_verifying": {
+    "message": "Doğrulanıyor…"
+  },
+  "opt_inactive": {
+    "message": "Token durumu \"$1\"; etkin değil."
+  },
+  "opt_verifyFailed": {
+    "message": "Token doğrulanamadı: $1"
+  },
+  "opt_saved": {
+    "message": "Token kaydedildi (…$1). Hesap kontrollerini görmek için sitelerinizden birinde popup'ı açın."
+  },
+  "opt_removed": {
+    "message": "Token silindi."
+  },
+  "opt_privacy": {
+    "message": "Token nereye gider"
+  },
+  "opt_privacy_text": {
+    "message": "Token yalnızca bu tarayıcıda saklanır (chrome.storage.local, senkronlanmaz) ve yalnızca api.cloudflare.com'a gönderilir. OriginLint yalnızca okur, hiçbir ayarı değiştirmez."
+  },
   "appName": {
     "message": "OriginLint — Cloudflare® siteleri için ayar denetçisi"
   },

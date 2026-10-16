@@ -21,7 +21,7 @@
 <main>
   <article lang="en">
     <h1>OriginLint Privacy Policy</h1>
-    <p class="meta">Last updated: 16 October 2026</p>
+    <p class="meta">Last updated: 16 October 2026 (version 0.4.0)</p>
 
     <h2>What OriginLint does</h2>
     <p>OriginLint is a browser extension that checks the website in your current tab for common Cloudflare, HTTPS, security header and DNS misconfigurations. It only runs when you click its toolbar icon.</p>
@@ -30,10 +30,13 @@
     <p>When you click the icon, OriginLint reads the address of the current tab, re-requests that page and up to three of its static files to read their response headers, and checks which scripts the page loaded. If you click “Run deep checks” and grant permission, it also requests that site’s <code>http://</code> address and its www/root-domain counterpart to see where they redirect.</p>
 
     <h2>Data it sends</h2>
-    <p>To check DNS records (DNSSEC, CAA, SPF, DMARC, IPv6), OriginLint sends the domain name of the scanned site to Cloudflare’s public DNS-over-HTTPS resolver at <code>cloudflare-dns.com</code>. Cloudflare’s handling of these queries is described in the <a href="https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/">1.1.1.1 public resolver privacy policy</a>. Nothing else leaves your browser. OriginLint has no servers of its own, no analytics and no tracking.</p>
+    <p>To check DNS records (DNSSEC, CAA, SPF, DMARC, IPv6), OriginLint sends the domain name of the scanned site to Cloudflare’s public DNS-over-HTTPS resolver at <code>cloudflare-dns.com</code>. Cloudflare’s handling of these queries is described in the <a href="https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/">1.1.1.1 public resolver privacy policy</a>. Apart from that, and the optional API mode described below, nothing leaves your browser. OriginLint has no servers of its own, no analytics and no tracking.</p>
+
+    <h2>Optional: Cloudflare API mode</h2>
+    <p>If you choose to paste a Cloudflare API token in the options page, OriginLint stores it only in this browser (<code>chrome.storage.local</code>, never synced) and sends it only to <code>api.cloudflare.com</code>, in the Authorization header of read-only requests about the zone you are scanning. OriginLint never changes a Cloudflare setting. You can remove the token at any time from the options page; removing it also revokes OriginLint’s access to api.cloudflare.com. Cloudflare’s handling of API requests is covered by <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare’s privacy policy</a>.</p>
 
     <h2>Data it stores</h2>
-    <p>OriginLint stores only the list of checks you chose to ignore, using Chrome’s <code>storage.sync</code>, so that list follows your Chrome profile if you use Chrome Sync. Scan results are not stored.</p>
+    <p>OriginLint stores the list of checks you chose to ignore, using Chrome’s <code>storage.sync</code>, so that list follows your Chrome profile if you use Chrome Sync. If you use API mode, it also stores your API token locally as described above. Scan results are not stored.</p>
 
     <h2>Sharing and sale</h2>
     <p>OriginLint does not sell, share or use data for advertising, profiling or any purpose other than producing the report you asked for.</p>
@@ -48,7 +51,7 @@
 
   <article lang="tr">
     <h1>OriginLint Gizlilik Politikası</h1>
-    <p class="meta">Son güncelleme: 16 Ekim 2026</p>
+    <p class="meta">Son güncelleme: 16 Ekim 2026 (sürüm 0.4.0)</p>
 
     <h2>OriginLint ne yapar</h2>
     <p>OriginLint, açık sekmedeki web sitesini yaygın Cloudflare, HTTPS, güvenlik başlığı ve DNS yapılandırma hataları için kontrol eden bir tarayıcı eklentisidir. Yalnızca araç çubuğundaki simgesine tıkladığınızda çalışır.</p>
@@ -57,10 +60,13 @@
     <p>Simgeye tıkladığınızda OriginLint sekmenin adresini okur, yanıt başlıklarını görmek için sayfayı ve en fazla üç statik dosyasını yeniden ister ve sayfanın hangi betikleri yüklediğine bakar. “Derin kontrolleri çalıştır”a tıklayıp izin verirseniz, sitenin <code>http://</code> adresini ve www/kök alan adı karşılığını da isteyerek nereye yönlendiklerine bakar.</p>
 
     <h2>Gönderdiği veriler</h2>
-    <p>DNS kayıtlarını (DNSSEC, CAA, SPF, DMARC, IPv6) kontrol etmek için OriginLint, taranan sitenin alan adını Cloudflare’in herkese açık DNS-over-HTTPS çözümleyicisine (<code>cloudflare-dns.com</code>) gönderir. Cloudflare’in bu sorguları nasıl işlediği <a href="https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/">1.1.1.1 çözümleyici gizlilik politikasında</a> açıklanır. Bunun dışında tarayıcınızdan hiçbir veri çıkmaz. OriginLint’in kendi sunucusu, analitiği ya da izleme kodu yoktur.</p>
+    <p>DNS kayıtlarını (DNSSEC, CAA, SPF, DMARC, IPv6) kontrol etmek için OriginLint, taranan sitenin alan adını Cloudflare’in herkese açık DNS-over-HTTPS çözümleyicisine (<code>cloudflare-dns.com</code>) gönderir. Cloudflare’in bu sorguları nasıl işlediği <a href="https://developers.cloudflare.com/1.1.1.1/privacy/public-dns-resolver/">1.1.1.1 çözümleyici gizlilik politikasında</a> açıklanır. Bu ve aşağıda anlatılan isteğe bağlı API modu dışında tarayıcınızdan hiçbir veri çıkmaz. OriginLint’in kendi sunucusu, analitiği ya da izleme kodu yoktur.</p>
+
+    <h2>İsteğe bağlı: Cloudflare API modu</h2>
+    <p>Ayarlar sayfasına bir Cloudflare API token yapıştırmayı seçerseniz, OriginLint onu yalnızca bu tarayıcıda (<code>chrome.storage.local</code>, hiçbir zaman senkronlanmaz) saklar ve yalnızca <code>api.cloudflare.com</code>'a, taradığınız alan adıyla ilgili salt okunur isteklerin Authorization başlığında gönderir. OriginLint hiçbir Cloudflare ayarını değiştirmez. Token'ı ayarlar sayfasından istediğiniz zaman silebilirsiniz; silmek OriginLint'in api.cloudflare.com erişimini de kaldırır. Cloudflare'in API isteklerini nasıl işlediği <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare gizlilik politikasında</a> açıklanır.</p>
 
     <h2>Sakladığı veriler</h2>
-    <p>OriginLint yalnızca yoksaymayı seçtiğiniz kontrollerin listesini Chrome’un <code>storage.sync</code> alanında saklar; Chrome Sync kullanıyorsanız bu liste profilinizle birlikte gelir. Tarama sonuçları saklanmaz.</p>
+    <p>OriginLint, yoksaymayı seçtiğiniz kontrollerin listesini Chrome’un <code>storage.sync</code> alanında saklar; Chrome Sync kullanıyorsanız bu liste profilinizle birlikte gelir. API modunu kullanıyorsanız token'ınızı da yukarıda anlatıldığı gibi yerel olarak saklar. Tarama sonuçları saklanmaz.</p>
 
     <h2>Paylaşım ve satış</h2>
     <p>OriginLint verileri satmaz, paylaşmaz; reklam, profilleme ya da istediğiniz raporu üretmek dışında hiçbir amaçla kullanmaz.</p>

@@ -1,4 +1,6 @@
-// Composes Chrome Web Store images from popup captures in store/raw (made by
+// Composes Chrome Web Store images from popup captures in store/raw (made by test/e2e.js with
+// EC_SHOTS=store/raw on https://example.com/, per EC_LANG: plain, EC_OPENFIX=1 (-fix) and
+// EC_FAKEAPI=1 EC_OPENFIX=1 renamed to -api). Originally:
 // `EC_SHOTS=store/raw node test/e2e.js https://example.com/`, once per EC_LANG).
 //   store/screenshot-{en,tr}-{1,2}.png  1280×800
 //   store/promo-small.png                440×280
@@ -16,12 +18,16 @@ const COPY = {
       'One click checks HTTPS, security headers, caching and DNS on any site. From the outside, no account or API token needed.'],
     ['Every finding comes with a fix',
       'Each issue points to the place in the Cloudflare dashboard where you change it. Ignore the ones that don’t fit your setup.'],
+    ['See what’s hidden from outside',
+      'Add a read-only API token to check SSL mode, minimum TLS, a forgotten Development Mode, DNSSEC status and more. The token goes only to Cloudflare’s API.'],
   ],
   tr: [
     ['Unuttuğunuz Cloudflare ayarlarını bulun',
       'Tek tıkla her sitede HTTPS, güvenlik başlıkları, önbellek ve DNS kontrolü. Dışarıdan; hesap ya da API token gerekmez.'],
     ['Her bulgunun bir çözümü var',
       'Her sorun, Cloudflare panelinde nereden düzelteceğinizi gösterir. Kurulumunuza uymayanları yoksayın.'],
+    ['Dışarıdan görünmeyeni de görün',
+      'Salt okunur bir API token ekleyin; SSL modu, minimum TLS, açık unutulmuş Development Mode, DNSSEC durumu ve fazlası kontrol edilsin. Token yalnızca Cloudflare API’sine gider.'],
   ],
 };
 
@@ -33,7 +39,8 @@ const BASE = `
 
 function screenshotHtml(lang, idx, shot) {
   const [h, p] = COPY[lang][idx];
-  const offset = idx === 0 ? 0 : 282; // second image starts at the HTTPS group, fix hints open
+  // 1: top of the popup · 2: HTTPS group with fix hints open · 3: API mode group
+  const offset = [0, 282, 205][idx];
   return `${FONT}<style>${BASE}
     .wrap{width:1280px;height:800px;display:grid;grid-template-columns:1fr 470px;gap:56px;align-items:center;padding:0 88px}
     .brand{display:flex;gap:12px;align-items:center;font-weight:700;font-size:22px;color:#0f766e}
@@ -68,8 +75,8 @@ async function render(html, w, h, out) {
   console.log(out);
 }
 for (const lang of ['en', 'tr']) {
-  const shots = [b64(`store/raw/example.com-${lang}.png`), b64(`store/raw/example.com-${lang}-fix.png`)];
-  for (const idx of [0, 1]) await render(screenshotHtml(lang, idx, shots[idx]), 1280, 800, `store/screenshot-${lang}-${idx + 1}.png`);
+  const shots = ['', '-fix', '-api'].map((suffix) => b64(`store/raw/example.com-${lang}${suffix}.png`));
+  for (const idx of [0, 1, 2]) await render(screenshotHtml(lang, idx, shots[idx]), 1280, 800, `store/screenshot-${lang}-${idx + 1}.png`);
 }
 await render(promoHtml, 440, 280, 'store/promo-small.png');
 await browser.close();

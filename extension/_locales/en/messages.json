@@ -1,4 +1,262 @@
 {
+  "grp_account": {
+    "message": "Cloudflare account (API)"
+  },
+  "apiAdd": {
+    "message": "Also check account settings with a Cloudflare API token →"
+  },
+  "apiNoPermission": {
+    "message": "access to api.cloudflare.com was removed. Save the token again in the options page."
+  },
+  "apiLoading": {
+    "message": "Reading account settings from the Cloudflare API…"
+  },
+  "apiTimeout": {
+    "message": "the Cloudflare API didn't answer in time"
+  },
+  "api_on": {
+    "message": "On"
+  },
+  "api_off": {
+    "message": "Off"
+  },
+  "api_unknown": {
+    "message": "Unexpected value: $1"
+  },
+  "api_error": {
+    "message": "API request failed: $1"
+  },
+  "api_noPerm": {
+    "message": "The token can't read this. Add the \"$1\" permission."
+  },
+  "check_apiAccess": {
+    "message": "API access"
+  },
+  "api_noZone": {
+    "message": "$1 isn't in the account this token can read."
+  },
+  "fix_apiAccess": {
+    "message": "Check the token's Zone Resources in My Profile › API Tokens, or use a token from the account that owns this domain."
+  },
+  "check_api_ssl": {
+    "message": "SSL/TLS encryption mode"
+  },
+  "api_ssl_auto": {
+    "message": " · set automatically by Cloudflare"
+  },
+  "api_ssl_full": {
+    "message": "Full: the origin certificate isn't validated, so a forged certificate would be accepted."
+  },
+  "api_ssl_flexible": {
+    "message": "Flexible: Cloudflare talks to your server over plain HTTP."
+  },
+  "api_ssl_off": {
+    "message": "Off: visitors aren't served HTTPS by Cloudflare."
+  },
+  "fix_api_ssl": {
+    "message": "SSL/TLS › Overview: Full (strict), with a valid or Cloudflare Origin CA certificate on the server."
+  },
+  "check_api_minTls": {
+    "message": "Minimum TLS version"
+  },
+  "api_minTls_weak": {
+    "message": "TLS $1 is still accepted. TLS 1.0 and 1.1 are deprecated."
+  },
+  "fix_api_minTls": {
+    "message": "SSL/TLS › Edge Certificates › Minimum TLS Version: TLS 1.2."
+  },
+  "check_api_tls13": {
+    "message": "TLS 1.3"
+  },
+  "fix_api_tls13": {
+    "message": "SSL/TLS › Edge Certificates › TLS 1.3: on."
+  },
+  "check_api_alwaysHttps": {
+    "message": "Always Use HTTPS"
+  },
+  "api_alwaysHttps_origin": {
+    "message": "Off, but the origin already redirects http:// to https://."
+  },
+  "api_alwaysHttps_off": {
+    "message": "Off, and no HTTP → HTTPS redirect was confirmed. Run the deep checks to see whether the origin redirects."
+  },
+  "fix_api_alwaysHttps": {
+    "message": "SSL/TLS › Edge Certificates › Always Use HTTPS, or redirect on the origin server."
+  },
+  "check_api_httpsRewrites": {
+    "message": "Automatic HTTPS Rewrites"
+  },
+  "api_httpsRewrites_off": {
+    "message": "Off. Fine if your pages have no http:// links."
+  },
+  "fix_api_httpsRewrites": {
+    "message": "SSL/TLS › Edge Certificates › Automatic HTTPS Rewrites."
+  },
+  "check_api_devMode": {
+    "message": "Development Mode"
+  },
+  "api_devMode_on": {
+    "message": "On: the cache is bypassed for about $1 more minutes."
+  },
+  "fix_api_devMode": {
+    "message": "Caching › Configuration › Development Mode: off. It turns itself off after 3 hours."
+  },
+  "check_api_securityLevel": {
+    "message": "Security level"
+  },
+  "api_underAttack": {
+    "message": "I'm Under Attack mode is on: every visitor gets a challenge page."
+  },
+  "api_securityLevel_low": {
+    "message": "Security level is \"$1\"."
+  },
+  "fix_api_securityLevel": {
+    "message": "Security › Settings: turn off I'm Under Attack mode once the attack is over."
+  },
+  "check_api_browserCheck": {
+    "message": "Browser Integrity Check"
+  },
+  "api_browserCheck_off": {
+    "message": "Off: requests with suspicious headers aren't blocked."
+  },
+  "fix_api_browserCheck": {
+    "message": "Security › Settings › Browser Integrity Check."
+  },
+  "check_api_rocketLoader": {
+    "message": "Rocket Loader (zone)"
+  },
+  "fix_api_rocketLoader": {
+    "message": "Speed › Settings › Content Optimization › Rocket Loader: off."
+  },
+  "check_api_emailObf": {
+    "message": "Email Address Obfuscation (zone)"
+  },
+  "api_emailObf_on": {
+    "message": "On for the whole zone. It injects a script on pages that contain email addresses."
+  },
+  "fix_api_emailObf": {
+    "message": "Security › Settings › Email Address Obfuscation."
+  },
+  "check_api_dnssec": {
+    "message": "DNSSEC (account)"
+  },
+  "api_dnssec_active": {
+    "message": "Active."
+  },
+  "api_dnssec_pending": {
+    "message": "Enabled in Cloudflare, but the DS record isn't at the registrar yet."
+  },
+  "api_dnssec_pendingDisabled": {
+    "message": "Being turned off (pending-disabled). Make sure the DS record is removed at your registrar."
+  },
+  "api_dnssec_error": {
+    "message": "Cloudflare reports a DNSSEC error. Check that the DS record at your registrar matches the one in the dashboard."
+  },
+  "api_dnssec_disabled": {
+    "message": "Disabled."
+  },
+  "fix_api_dnssec": {
+    "message": "DNS › Settings › DNSSEC: enable it, then add the DS record it shows at your registrar."
+  },
+  "check_api_grey": {
+    "message": "DNS-only records"
+  },
+  "api_grey_partial": {
+    "message": "This zone has more DNS records than OriginLint reads; none of the first 300 per type are DNS-only."
+  },
+  "api_grey_none": {
+    "message": "Every proxiable record is proxied."
+  },
+  "api_grey_some": {
+    "message": "$1 proxiable record(s) are DNS-only: $2. Fine for mail or SSH hosts; otherwise their IP is exposed."
+  },
+  "fix_api_grey": {
+    "message": "DNS › Records: switch web hosts to Proxied (orange cloud)."
+  },
+  "check_api_certs": {
+    "message": "Edge certificates"
+  },
+  "api_certs_ok": {
+    "message": "Active; the first expires in $1 days."
+  },
+  "api_certs_ok_nodate": {
+    "message": "Active."
+  },
+  "api_certs_bad": {
+    "message": "Not active: $1"
+  },
+  "api_certs_expiring": {
+    "message": "A certificate expires in $1 days and hasn't been renewed."
+  },
+  "api_certs_none": {
+    "message": "No edge certificate found for this zone."
+  },
+  "fix_api_certs": {
+    "message": "SSL/TLS › Edge Certificates: check the certificate status and CAA records."
+  },
+  "opt_title": {
+    "message": "Cloudflare API mode"
+  },
+  "opt_lead": {
+    "message": "Adds checks that can't be seen from outside: SSL mode, minimum TLS, Development Mode, DNSSEC status and more. Read-only."
+  },
+  "opt_step1": {
+    "message": "1. Create a read-only token"
+  },
+  "opt_step1_open": {
+    "message": "Open"
+  },
+  "opt_step1_custom": {
+    "message": "Click Create Token, then Create Custom Token."
+  },
+  "opt_step1_perms": {
+    "message": "Add these four permissions:"
+  },
+  "opt_step1_zones": {
+    "message": "Zone Resources: All zones, or only the zones you want to check. Don't add any Edit permission."
+  },
+  "opt_step2": {
+    "message": "2. Paste the token"
+  },
+  "opt_tokenLabel": {
+    "message": "API token"
+  },
+  "opt_save": {
+    "message": "Save and verify"
+  },
+  "opt_remove": {
+    "message": "Remove token"
+  },
+  "opt_tokenEmpty": {
+    "message": "Paste a token first."
+  },
+  "opt_tokenFormat": {
+    "message": "This doesn't look like an API token. Paste the token itself, not the Global API Key or the token ID."
+  },
+  "opt_permDenied": {
+    "message": "OriginLint needs access to api.cloudflare.com to use the token."
+  },
+  "opt_verifying": {
+    "message": "Verifying…"
+  },
+  "opt_inactive": {
+    "message": "Token status is \"$1\", not active."
+  },
+  "opt_verifyFailed": {
+    "message": "Couldn't verify the token: $1"
+  },
+  "opt_saved": {
+    "message": "Token saved (…$1). Open the popup on one of your sites to see account checks."
+  },
+  "opt_removed": {
+    "message": "Token removed."
+  },
+  "opt_privacy": {
+    "message": "Where the token goes"
+  },
+  "opt_privacy_text": {
+    "message": "The token is stored only in this browser (chrome.storage.local, not synced) and is sent only to api.cloudflare.com. OriginLint only reads; it never changes a setting."
+  },
   "appName": {
     "message": "OriginLint — setup checker for Cloudflare® sites"
   },

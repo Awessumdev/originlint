@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OriginLint</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body class="options">
+  <main class="opt">
+    <header class="opt-head">
+      <img src="../icons/icon-48.png" alt="" width="36" height="36">
+      <div>
+        <h1 data-i18n="opt_title"></h1>
+        <p class="muted" data-i18n="opt_lead"></p>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2 data-i18n="opt_step1"></h2>
+      <ol>
+        <li><span data-i18n="opt_step1_open"></span> <a href="https://dash.cloudflare.com/profile/api-tokens" target="_blank" rel="noopener">dash.cloudflare.com/profile/api-tokens</a></li>
+        <li data-i18n="opt_step1_custom"></li>
+        <li><span data-i18n="opt_step1_perms"></span>
+          <ul class="perms" id="perms"></ul>
+        </li>
+        <li data-i18n="opt_step1_zones"></li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="opt_step2"></h2>
+      <form id="form" novalidate>
+        <label for="token" data-i18n="opt_tokenLabel"></label>
+        <input id="token" type="password" autocomplete="off" spellcheck="false" required>
+        <p id="tokenError" class="field-error" role="alert" hidden></p>
+        <div class="row">
+          <button id="save" type="submit" class="primary" data-i18n="opt_save"></button>
+          <button id="remove" type="button" data-i18n="opt_remove" hidden></button>
+        </div>
+      </form>
+      <p id="status" class="opt-status" role="status"></p>
+    </section>
+
+    <section class="card">
+      <h2 data-i18n="opt_privacy"></h2>
+      <p class="muted" data-i18n="opt_privacy_text"></p>
+    </section>
+  </main>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

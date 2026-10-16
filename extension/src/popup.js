@@ -1,12 +1,15 @@
 import { collectPage } from './collect.js';
 import { collectDns, hasAddress, hostVariant, isDnsName } from './dns.js';
 import { evaluate, toMarkdown, GROUPS } from './checks.js';
+import { API_ORIGIN, collectAccount } from './cfapi.js';
+import { evaluateAccount, mergeResults } from './apichecks.js';
 
 const t = (key, subs) => chrome.i18n.getMessage(key, subs && subs.map(String)) || key;
 const $ = (id) => document.getElementById(id);
 const COUNTED = ['fail', 'warn', 'info', 'pass'];
 const ORDER = { fail: 0, warn: 1, action: 2, info: 3 };
 const TIMEOUT_MS = 10000;
+const API_BUDGET_MS = 25000; // API mode never holds the popup longer than this
 
 // Bumped by every scan; async work from an older scan drops its result.
 let generation = 0;
@@ -15,6 +18,7 @@ let deepRunning = false;
 let state = {
   tab: null, page: null, dns: null, dnsError: '', redirect: null,
   variant: null, variantHost: '', results: [], muted: [], deepNote: '',
+  acct: null, hasToken: false, acctLoading: false,
 };
 
 document.documentElement.lang = chrome.i18n.getUILanguage();
@@ -118,9 +122,15 @@ function setBusy(busy) {
   document.querySelectorAll('.run').forEach((b) => { b.disabled = busy; });
 }
 
+function evaluateAll() {
+  const outside = evaluate(state, t);
+  if (!state.acct) return outside;
+  return mergeResults(outside, evaluateAccount(state.acct, outside, t));
+}
+
 function recompute() {
   try {
-    state.results = evaluate(state, t);
+    state.results = evaluateAll();
     render();
   } catch (e) {
     setStatus(t('scanFailed', [e.message || e]), true);
@@ -147,6 +157,17 @@ function renderDeep() {
   b.disabled = deepRunning;
   b.addEventListener('click', runDeepChecks);
   box.replaceChildren(b, el('span', 'deep-note', state.deepNote || t('deepHint')));
+}
+
+// API mode lives in the options page; the popup only links there until a token is saved.
+function renderApiLink() {
+  const box = $('apiLink');
+  if (state.acctLoading) return box.replaceChildren(el('span', 'deep-note', t('apiLoading')));
+  if (state.hasToken) return box.replaceChildren();
+  const a = el('button', 'linklike', t('apiAdd'));
+  a.type = 'button';
+  a.addEventListener('click', () => chrome.runtime.openOptionsPage());
+  box.replaceChildren(a);
 }
 
 function itemNode(r, muted) {
@@ -185,6 +206,7 @@ function render() {
   }));
 
   renderDeep();
+  renderApiLink();
 
   const groups = GROUPS.map((g) => {
     const rs = active.filter((r) => r.group === g);
@@ -215,9 +237,19 @@ function render() {
   $('rescan').disabled = deepRunning;
 }
 
+// Start from a blank header so an early exit can't leave the previous scan's buttons behind.
+function resetView() {
+  state.acctLoading = false;
+  $('site').hidden = true;
+  $('deep').replaceChildren();
+  $('apiLink').replaceChildren();
+  $('ignoredBox').hidden = true;
+}
+
 async function scan() {
   $('rescan').disabled = true;
   $('copy').disabled = true;
+  resetView();
   setStatus(t('scanning'));
 
   const gen = ++generation;
@@ -257,13 +289,44 @@ async function scan() {
   const granted = await chrome.permissions.contains({ origins: deepOrigins(host, variantHost) }).catch(() => false);
   if (granted) [redirect, variant] = await Promise.all([probeHttp(host), probeVariant(variantHost)]);
   const muted = await loadMuted();
+  const hasToken = await loadToken().then(Boolean);
   if (gen !== generation) return;
 
   state = {
     ...state, page, dns: dnsRes.d || null, dnsError: dnsRes.e || '',
-    redirect, variant, variantHost, muted, deepNote: '',
+    redirect, variant, variantHost, muted, deepNote: '', hasToken, acct: null,
+    acctLoading: hasToken && isDnsName(host),
   };
   recompute();
+
+  // API mode comes second: the outside report is already on screen while it loads.
+  if (!state.acctLoading) return;
+  const acct = await loadAccount(host);
+  if (gen !== generation) return;
+  state.acct = acct;
+  state.acctLoading = false;
+  recompute();
+}
+
+async function loadToken() {
+  try {
+    const { cfToken } = await chrome.storage.local.get('cfToken');
+    return cfToken || '';
+  } catch { return ''; }
+}
+
+async function loadAccount(host) {
+  const token = await loadToken();
+  if (!token) return null;
+  const allowed = await chrome.permissions.contains({ origins: [API_ORIGIN] }).catch(() => false);
+  if (!allowed) return { zoneName: host, error: new Error(t('apiNoPermission')) };
+  const budget = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error(t('apiTimeout'))), API_BUDGET_MS));
+  try {
+    return { zoneName: host, ...(await Promise.race([collectAccount(token, host), budget])) };
+  } catch (e) {
+    return { zoneName: host, error: e };
+  }
 }
 
 $('rescan').addEventListener('click', scan);
