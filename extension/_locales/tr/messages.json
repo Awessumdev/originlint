@@ -42,7 +42,13 @@
     "message": "Derin kontrolleri çalıştır"
   },
   "deep_action": {
-    "message": "Sitenin http:// ve www/kök adreslerini istemek için bu siteye özel tek seferlik izin gerekir."
+    "message": "Derin kontrollerin parçası. Üstteki düğmeyle çalıştırın."
+  },
+  "deepHint": {
+    "message": "http:// ve www adreslerini test eder. Bu site için bir kez izin ister."
+  },
+  "deepOn": {
+    "message": "✓ Bu site için derin kontroller çalıştı"
   },
   "deepDenied": {
     "message": "İzin verilmediği için derin kontroller çalışmadı."

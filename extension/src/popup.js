@@ -19,6 +19,7 @@ let state = {
 
 document.documentElement.lang = chrome.i18n.getUILanguage();
 document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+$('version').textContent = `EdgeCheck v${chrome.runtime.getManifest().version}`;
 
 function el(tag, cls, text) {
   const n = document.createElement(tag);
@@ -133,7 +134,22 @@ function recompute() {
   chrome.action.setBadgeBackgroundColor({ tabId: state.tab.id, color: hasFail ? '#b91c1c' : '#b45309' });
 }
 
-function itemNode(r, muted, withButton) {
+// Deep checks get a permanent spot under the summary: a button until they've run, a status after.
+function renderDeep() {
+  const box = $('deep');
+  const ran = !!(state.redirect || state.variant);
+  if (ran) {
+    box.replaceChildren(el('span', 'deep-on', t('deepOn')));
+    return;
+  }
+  const b = el('button', 'primary run', t('deepButton'));
+  b.type = 'button';
+  b.disabled = deepRunning;
+  b.addEventListener('click', runDeepChecks);
+  box.replaceChildren(b, el('span', 'deep-note', state.deepNote || t('deepHint')));
+}
+
+function itemNode(r, muted) {
   const li = el('div', `item st-${r.status}`);
   li.append(el('span', 'dot', t('st_' + r.status)), el('span', 'title', r.title));
   if (r.status !== 'pass' && r.status !== 'skip') {
@@ -142,13 +158,7 @@ function itemNode(r, muted, withButton) {
     b.addEventListener('click', () => toggleMute(r.id));
     li.append(b);
   }
-  li.append(el('span', 'detail', r.status === 'action' && state.deepNote ? state.deepNote : r.detail));
-  if (withButton) {
-    const b = el('button', 'small primary run', t('deepButton'));
-    b.type = 'button';
-    b.addEventListener('click', runDeepChecks);
-    li.append(b);
-  }
+  li.append(el('span', 'detail', r.detail));
   if (r.fix && !muted && r.status !== 'action') {
     const d = el('details', 'fix');
     d.append(el('summary', null, t('howToFix')), el('p', null, r.fix));
@@ -174,8 +184,8 @@ function render() {
     return box;
   }));
 
-  // One "run deep checks" button, on the first pending deep check.
-  let buttonPlaced = false;
+  renderDeep();
+
   const groups = GROUPS.map((g) => {
     const rs = active.filter((r) => r.group === g);
     if (!rs.length) return null;
@@ -184,16 +194,12 @@ function render() {
     const skipped = rs.filter((r) => r.status === 'skip');
     const sec = el('section', 'group');
     sec.append(el('h2', null, t('grp_' + g)));
-    for (const r of open) {
-      const withButton = r.status === 'action' && !buttonPlaced;
-      if (withButton) buttonPlaced = true;
-      sec.append(itemNode(r, false, withButton));
-    }
+    for (const r of open) sec.append(itemNode(r, false));
     if (passed.length || skipped.length) {
       const d = el('details', 'passed');
       const label = [passed.length && t('groupPassed', [passed.length]), skipped.length && t('groupSkipped', [skipped.length])]
         .filter(Boolean).join(' · ');
-      d.append(el('summary', null, label), ...passed.concat(skipped).map((r) => itemNode(r, false, false)));
+      d.append(el('summary', null, label), ...passed.concat(skipped).map((r) => itemNode(r, false)));
       sec.append(d);
     }
     return sec;
@@ -203,7 +209,7 @@ function render() {
   const ignored = results.filter((r) => muted.includes(r.id));
   $('ignoredBox').hidden = !ignored.length;
   $('ignoredTitle').textContent = t('ignored', [ignored.length]);
-  $('ignoredList').replaceChildren(...ignored.map((r) => itemNode(r, true, false)));
+  $('ignoredList').replaceChildren(...ignored.map((r) => itemNode(r, true)));
 
   $('copy').disabled = false;
   $('rescan').disabled = deepRunning;

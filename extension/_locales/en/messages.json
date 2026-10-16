@@ -42,7 +42,13 @@
     "message": "Run deep checks"
   },
   "deep_action": {
-    "message": "Needs a one-time permission for this site to request its http:// and www/apex addresses."
+    "message": "Part of the deep checks. Run them with the button at the top."
+  },
+  "deepHint": {
+    "message": "Tests the http:// and www addresses. Asks once for this site."
+  },
+  "deepOn": {
+    "message": "✓ Deep checks ran for this site"
   },
   "deepDenied": {
     "message": "Permission wasn't granted, so deep checks didn't run."

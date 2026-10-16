@@ -1,4 +1,4 @@
-# Chrome Web Store listing — EdgeCheck 0.2.0
+# Chrome Web Store listing — EdgeCheck 0.2.1
 
 ## Name (from _locales)
 - en: EdgeCheck — setup checker for Cloudflare® sites
