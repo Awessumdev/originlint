@@ -14,7 +14,7 @@ S = {
     "zones_onlyProblems": ("Only zones with problems", "Yalnızca sorunlu alan adları"),
     "zones_footer": ("Reads every zone your API token can see, with the same read-only requests as the popup. Outside checks (headers, redirects) need the site open in a tab, so they aren't part of this page.",
                      "API token'ınızın görebildiği her alan adını, popup'takiyle aynı salt okunur isteklerle okur. Dışarıdan yapılan kontroller (başlıklar, yönlendirmeler) sitenin bir sekmede açık olmasını gerektirdiği için bu sayfada yok."),
-    "zones_empty": ("No scan yet. Click \"Scan all zones\".", "Henüz tarama yok. \"Tümünü tara\"ya tıklayın."),
+    "zones_empty": ("Click \"Scan all zones\" to start.", "Taramayı başlatmak için \"Tümünü tara\"ya tıklayın."),
     "zones_allClean": ("No zone has errors or warnings.", "Hiçbir alan adında hata ya da uyarı yok."),
     "zones_lastScan": ("Last scan: $1", "Son tarama: $1"),
     "zones_comparedTo": ("compared with $1", "$1 ile karşılaştırıldı"),

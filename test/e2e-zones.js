@@ -135,6 +135,16 @@ const stored = await sw.evaluate(async () => (await chrome.storage.local.get('zo
   .filter((e) => e.diff.worse.length).map((e) => e.zone.name));
 check(stored.includes('alpha.example'), `daily scan stored the new problem (${stored.join(', ')})`);
 
+// Reopening the page starts empty; opening it from the notification shows the daily report.
+await page.goto(`chrome-extension://${extId}/src/zones.html?daily`);
+await page.waitForSelector('#scan:not([disabled])');
+check(!!(await page.$('.zone .z-chip.new')), 'notification view shows the daily report');
+await page.goto(`chrome-extension://${extId}/src/zones.html`);
+await page.waitForSelector('#scan:not([disabled])');
+check(!(await page.$('.zone')) && await page.$('.z-empty'), 'reopened page starts with no report');
+check(!(await sw.evaluate(async () => (await chrome.storage.local.get('zonesReport')).zonesReport)), 'stored report cleared on open');
+check(!!(await sw.evaluate(async () => (await chrome.storage.local.get('zonesSnapshot')).zonesSnapshot)), 'baseline for "new" badges kept');
+
 check(!errors.length, `no page errors ${errors.join(' | ')}`);
 check(!swErrors.length, `no service worker errors ${swErrors.join(' | ')}`);
 await browser.close();

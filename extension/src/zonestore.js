@@ -23,6 +23,12 @@ export async function loadReport() {
   } catch { return null; }
 }
 
+// The zones page starts empty each time it's opened. The snapshot stays, so the next scan still
+// shows what changed.
+export async function clearReport() {
+  try { await chrome.storage.local.remove('zonesReport'); } catch {}
+}
+
 export class ScanBusyError extends Error {}
 
 // One scan at a time across the zones page, other tabs and the daily alarm. storage has no

@@ -1,6 +1,6 @@
 import { API_ORIGIN } from './cfapi.js';
 import { score, REQUESTS_PER_SECOND } from './zonescan.js';
-import { loadToken, loadReport, runAndStore, setDaily, ScanBusyError, ALARM } from './zonestore.js';
+import { loadToken, loadReport, clearReport, runAndStore, setDaily, ScanBusyError, ALARM } from './zonestore.js';
 
 const t = (key, subs) => chrome.i18n.getMessage(key, subs && subs.map(String)) || key;
 const $ = (id) => document.getElementById(id);
@@ -233,7 +233,9 @@ $('onlyProblems').addEventListener('change', render);
   muted = await loadMuted();
   const { dailyScan } = await chrome.storage.local.get('dailyScan').catch(() => ({}));
   $('daily').checked = !!dailyScan || !!(await chrome.alarms.get(ALARM));
-  report = await loadReport();
+  // Opened from the daily scan's notification: show what it found. Otherwise start fresh.
+  if (new URLSearchParams(location.search).has('daily')) report = await loadReport();
+  else await clearReport();
   render();
   if (!(await loadToken())) noToken();
 })();

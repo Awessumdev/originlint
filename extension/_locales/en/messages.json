@@ -18,7 +18,7 @@
     "message": "Reads every zone your API token can see, with the same read-only requests as the popup. Outside checks (headers, redirects) need the site open in a tab, so they aren't part of this page."
   },
   "zones_empty": {
-    "message": "No scan yet. Click \"Scan all zones\"."
+    "message": "Click \"Scan all zones\" to start."
   },
   "zones_allClean": {
     "message": "No zone has errors or warnings."

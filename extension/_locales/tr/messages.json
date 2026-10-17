@@ -18,7 +18,7 @@
     "message": "API token'ınızın görebildiği her alan adını, popup'takiyle aynı salt okunur isteklerle okur. Dışarıdan yapılan kontroller (başlıklar, yönlendirmeler) sitenin bir sekmede açık olmasını gerektirdiği için bu sayfada yok."
   },
   "zones_empty": {
-    "message": "Henüz tarama yok. \"Tümünü tara\"ya tıklayın."
+    "message": "Taramayı başlatmak için \"Tümünü tara\"ya tıklayın."
   },
   "zones_allClean": {
     "message": "Hiçbir alan adında hata ya da uyarı yok."

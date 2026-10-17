@@ -48,5 +48,5 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 });
 
 chrome.notifications?.onClicked.addListener((id) => {
-  if (id === ALARM) chrome.tabs.create({ url: chrome.runtime.getURL('src/zones.html') });
+  if (id === ALARM) chrome.tabs.create({ url: chrome.runtime.getURL('src/zones.html?daily') });
 });
